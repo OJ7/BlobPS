@@ -8,6 +8,8 @@ BlobsPS
 3. Peter Karp
 4. Chijioke Okonkwo
 
+#### Description
+This is a Pokemon-inspired real-life exploration game where you can encounter, battle, and combine blobs through the use of the phone's GPS location.
 
 
 #### Before Starting
