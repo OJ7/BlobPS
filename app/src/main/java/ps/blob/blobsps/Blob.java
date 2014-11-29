@@ -1,4 +1,4 @@
-public class Blob {
+public abstract class Blob {
     protected String blobName;
     protected final static int BLOB_PERSONAL, BLOB_ENEMY;
     protected int hp;
@@ -27,5 +27,70 @@ public class Blob {
         //How did you want to do this special? did you want something like a seed because in the spec it said
         //int special. Either way I set up the constructor to take a seed so change it how you will
         this.special = Special(special);
+    }
+
+    public abstract void attack(Blob blob) {
+        int damage = this.atk - blob.getDef();
+        if(damage < 0) {
+            damage = 0;
+        }
+        blob.setHP(blob.getHp() - damage);
+    }
+
+    //I don't think we need to do recieve damage because its just getting the
+    //blobHp and then subtracting damage from it.
+
+    public abstract void useItem(Item item);
+
+    //Still confused on special. Chijioke can you explain a bit more
+
+    public abstract void useSpecial();
+
+    public int getHp() {
+        return this.hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public int getSp() {
+        return this.sp;
+    }
+
+    public void setSp(int sp) {
+        this.sp = sp;
+    }
+
+    public int getAtk() {
+        return this.atk;
+    }
+
+    public void setAtk(int atk) {
+        this.atk = atk;
+    }
+
+    public int getDef() {
+        return this.def;
+    }
+
+    public void setDef(int def) {
+        this.def = def;
+    }
+
+    public double getRarity() {
+        return this.rarity();
+    }
+
+    public int getTier() {
+        return tier;
+    }
+
+    public String getImageReference() {
+        return imageReference;
+    }
+
+    public HashMap<Double, Item> getDropList() {
+        return this.dropList
     }
 }
