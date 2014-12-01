@@ -1,5 +1,7 @@
-public class Item() {
+package ps.blob.blobsps;
+
+public class Item {
     public Item() {
-        return null;
+
     }
 }

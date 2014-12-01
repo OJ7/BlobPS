@@ -1,9 +1,11 @@
-public class Special{
+package ps.blob.blobsps;
+
+public class Special {
     public Special() {
-        return null;
+
     }
 
-    public Special(int seed) {
+    public int Special(int seed) {
         return seed;
     }
 }

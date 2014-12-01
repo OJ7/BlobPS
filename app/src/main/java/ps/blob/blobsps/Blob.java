@@ -1,11 +1,15 @@
+package ps.blob.blobsps;
+
+import java.util.HashMap;
+
 public abstract class Blob {
     protected String blobName;
-    protected final static int BLOB_PERSONAL, BLOB_ENEMY;
+    protected final static int BLOB_PERSONAL = 0, BLOB_ENEMY = 1;
     protected int hp;
     protected int sp;
     protected int atk;
     protected int def;
-    protected Special special;
+    protected Special special;  
     protected double rarity;
     // recipe instead of wild because it will be true for all cases except
     // recipe cases
@@ -15,26 +19,27 @@ public abstract class Blob {
     protected HashMap<Double, Item> dropList;
 
     public Blob(String name, int hp, int sp, int atk, int def, double rarity, boolean wild, String image, HashMap<Double, Item> dropList, int special) {
-        this.name = name;
+        this.blobName = name;
         this.hp = hp;
         this.sp = sp;
         this.atk = atk;
         this.def = def;
         this.rarity = rarity;
-        this.wild = wild;
-        this.image = image;
+        //this.wild = wild;
+        this.imageReference = image;
         this.dropList = dropList;
         //How did you want to do this special? did you want something like a seed because in the spec it said
         //int special. Either way I set up the constructor to take a seed so change it how you will
-        this.special = Special(special);
+        //this.special = Special(special);
     }
 
-    public abstract void attack(Blob blob) {
+    //public abstract void attack(Blob blob) {
+    public void attack(Blob blob) {
         int damage = this.atk - blob.getDef();
-        if(damage < 0) {
+        if (damage < 0) {
             damage = 0;
         }
-        blob.setHP(blob.getHp() - damage);
+        blob.setHp(blob.getHp() - damage);
     }
 
     //I don't think we need to do recieve damage because its just getting the
@@ -79,7 +84,7 @@ public abstract class Blob {
     }
 
     public double getRarity() {
-        return this.rarity();
+        return this.rarity;
     }
 
     public int getTier() {
@@ -91,6 +96,6 @@ public abstract class Blob {
     }
 
     public HashMap<Double, Item> getDropList() {
-        return this.dropList
+        return this.dropList;
     }
 }
