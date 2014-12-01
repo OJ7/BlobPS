@@ -34,17 +34,18 @@ public abstract class Blob {
         if(damage < 0) {
             damage = 0;
         }
-        blob.setHP(blob.getHp() - damage);
+        blob.receiveDamage(damage);
     }
 
-    //I don't think we need to do recieve damage because its just getting the
-    //blobHp and then subtracting damage from it.
+    public abstract void receiveDamage(int damage);
 
     public abstract void useItem(Item item);
 
-    //Still confused on special. Chijioke can you explain a bit more
+    //Special explained in spec
 
-    public abstract void useSpecial();
+    public void useSpecial(Blob userBlob, Blob enemyBlob){
+       // special.use(userBlob, enemyBlob);
+    }
 
     public int getHp() {
         return this.hp;
