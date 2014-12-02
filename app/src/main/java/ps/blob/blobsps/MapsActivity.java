@@ -59,7 +59,6 @@ public class MapsActivity extends FragmentActivity {
 
     }
 
-
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -95,11 +94,24 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(38.986918, -76.942554)).title("Marker"));
         // Centering Map on UMD
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(UMD, 15));
         // Disabling Zoom Buttons
         mMap.getUiSettings().setZoomControlsEnabled(false);
 
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng position) {
+                // mapGrid.getTile(position)
+                    // for each LatLngBounds [a cell in the mapGrid]
+                        // if(LatLngBounds.contains(position)) { tile = LatLngBounds }
+                    // showInfoScreen(tile)
+                
+            }
+        });
+
     }
+
+
+
 }
