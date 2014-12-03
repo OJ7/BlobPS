@@ -1,6 +1,5 @@
 package ps.blob.blobsps;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
@@ -24,15 +23,21 @@ public class MapsActivity extends FragmentActivity {
     private int locToggle = 0; // 0 = will center on current location, 1 = will center on map
 
     private final LatLng UMD = new LatLng(38.989822, -76.940637);
-    private final LatLng UMD_NE = new LatLng(38.980446, -76.956008),
-            UMD_SW = new LatLng(39.001460, -76.931203);
-    //private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
+    private final double NORTH = 39.001460, EAST = -76.956008, SOUTH = 38.980446, WEST = -76.931203;
+    private final LatLng UMD_NE = new LatLng(NORTH, EAST),
+            UMD_SW = new LatLng(SOUTH, WEST);
+    private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
+
+    private final int numAreas = 4; // grid will be numAreas x numAreas
+    private AreaGrid[][] grid = new AreaGrid[numAreas][numAreas];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        setUpGrid();
         setupFAB();
     }
 
@@ -240,8 +245,8 @@ public class MapsActivity extends FragmentActivity {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng position) {
-                // mapGrid.getTile(position)
-                // for each LatLngBounds [a cell in the mapGrid]
+                // grid.getTile(position)
+                // for each LatLngBounds [a cell in the grid]
                 // if(LatLngBounds.contains(position)) { tile = LatLngBounds }
                 // showInfoScreen(tile)
 
@@ -268,9 +273,24 @@ public class MapsActivity extends FragmentActivity {
     }
 
     private void centerMapOnCampus() {
-        //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(UMD_BOUNDS, 16));
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(UMD_BOUNDS, 14));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(UMD, 14));
 
+    }
+
+    private void setUpGrid() {
+        double areaLength = Math.abs(EAST - WEST) / numAreas,
+                areaHeight = Math.abs(NORTH - SOUTH) / numAreas;
+        int areaID = 0;
+        for (int row = 0; row < numAreas; row++) {
+            for (int col = 0; col < numAreas; col++) {
+                LatLng SW = new LatLng(NORTH - (row+1)*areaHeight, WEST - col*areaLength);
+                LatLng NE = new LatLng(NORTH - row*areaHeight, WEST - (col+1)*areaLength);
+                AreaGrid area = new AreaGrid(SW, NE, areaID);
+                // TODO - Add overlay on area
+                grid[row][col] = area;
+            }
+        }
     }
 
 }
