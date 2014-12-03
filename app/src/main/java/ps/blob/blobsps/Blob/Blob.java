@@ -1,15 +1,18 @@
-package ps.blob.blobsps;
+package ps.blob.blobsps.Blob;
 
 import java.util.HashMap;
 
+import ps.blob.blobsps.Item;
+import ps.blob.blobsps.Special.Special;
+
 public abstract class Blob {
     protected String blobName;
-    protected final static int BLOB_PERSONAL = 0, BLOB_ENEMY = 1;
+    protected final static int BLOB_TYPE = 0;
     protected int hp;
     protected int sp;
     protected int atk;
     protected int def;
-    protected Special special;  
+    protected Special special;
     protected double rarity;
     // recipe instead of wild because it will be true for all cases except
     // recipe cases
@@ -33,7 +36,6 @@ public abstract class Blob {
         //this.special = Special(special);
     }
 
-    //public abstract void attack(Blob blob) {
     public void attack(Blob blob) {
         int damage = this.atk - blob.getDef();
         if (damage < 0) {
@@ -42,11 +44,12 @@ public abstract class Blob {
         blob.receiveDamage(damage);
     }
 
-    public abstract void receiveDamage(int damage);
+    public void receiveDamage(int damage) {
+        int newHp = this.getHp() - damage;
+        this.setHp(newHp);
+    }
 
     public abstract void useItem(Item item);
-
-    //Special explained in spec
 
     public void useSpecial(Blob userBlob, Blob enemyBlob){
        // special.use(userBlob, enemyBlob);

@@ -1,6 +1,7 @@
-package ps.blob.blobsps;
+package ps.blob.blobsps.Special;
 
 public class Special {
+
     public Special() {
 
     }
