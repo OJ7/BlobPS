@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 public abstract class Blob {
     protected String blobName;
-    protected final static int BLOB_PERSONAL = 0, BLOB_ENEMY = 1;
+    protected final static int BLOBTYPE;
     protected int hp;
     protected int sp;
     protected int atk;
     protected int def;
-    protected Special special;  
+    protected Special special;
     protected double rarity;
     // recipe instead of wild because it will be true for all cases except
     // recipe cases
@@ -20,6 +20,7 @@ public abstract class Blob {
 
     public Blob(String name, int hp, int sp, int atk, int def, double rarity, boolean wild, String image, HashMap<Double, Item> dropList, int special) {
         this.blobName = name;
+        this.BLOBTYPE = 0;
         this.hp = hp;
         this.sp = sp;
         this.atk = atk;
@@ -42,7 +43,11 @@ public abstract class Blob {
         blob.receiveDamage(damage);
     }
 
-    public abstract void receiveDamage(int damage);
+    public abstract void receiveDamage(int damage) {
+        newHp = this.getHp() - damage;
+        this.setHp(newHp);
+    }
+
 
     public abstract void useItem(Item item);
 
@@ -90,6 +95,10 @@ public abstract class Blob {
 
     public int getTier() {
         return tier;
+    }
+
+    public int getType() {
+        return BLOBTYPE;
     }
 
     public String getImageReference() {
