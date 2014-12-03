@@ -2,24 +2,31 @@ package ps.blob.blobsps;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
-    private FloatingActionButton fabButton;
-    private final LatLng UMD = new LatLng(38.989822, -76.940637);
 
+    private FloatingActionButton fabButton, blobFAB, itemsFAB, combineFAB, settingsFAB, locationFAB;
+    private int expandFAB = 0; // 0 = collapsed, 1 = expanded
+    private int locToggle = 0; // 0 = will center on current location, 1 = will center on map
+
+    private final LatLng UMD = new LatLng(38.989822, -76.940637);
+    private final LatLng UMD_NE = new LatLng(38.980446, -76.956008),
+            UMD_SW = new LatLng(39.001460, -76.931203);
+    //private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,24 +47,155 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setupFAB() {
         fabButton = new FloatingActionButton.Builder(this)
-                .withDrawable(
-                        getResources().getDrawable(R.drawable.ic_action_star))
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_star))
                 .withButtonColor(Color.RED)
                 .withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 16).create();
+        showLocationFAB();
+
         fabButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                // TODO - add more buttons when clicked
-                // TODO - implement material design animations
-                Intent intent = new Intent(MapsActivity.this,
-                        FloatingActionButton.class);
-                //startActivity(intent);
+                // TODO (minor) - implement material design animations
+                if (expandFAB == 0) {
+                    expandFAB = 1;
+                    showFABMenu();
+                    fabButton.setFloatingActionButtonDrawable(getResources().getDrawable(
+                            R.drawable.ic_action_cancel));
+                } else {
+                    expandFAB = 0;
+                    hideFABMenu();
+                    fabButton.setFloatingActionButtonDrawable(getResources().getDrawable(
+                            R.drawable.ic_action_star));
+                }
             }
         });
 
     }
+
+    private void hideFABMenu() {
+        blobFAB.hideFloatingActionButton();
+        itemsFAB.hideFloatingActionButton();
+        combineFAB.hideFloatingActionButton();
+        settingsFAB.hideFloatingActionButton();
+        showLocationFAB();
+    }
+
+    private void showFABMenu() {
+        locationFAB.hideFloatingActionButton();
+        showBlobFAB();
+        showItemFAB();
+        showCombineFAB();
+        showSettingsFAB();
+    }
+
+    private void showLocationFAB() {
+        locationFAB = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.ic_action_locate))
+                .withButtonColor(Color.CYAN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 86).create();
+
+        locationFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (locToggle == 0) {
+                    locToggle = 1;
+                    locationFAB.setFloatingActionButtonColor(Color.MAGENTA);
+                    centerMapOnMyLocation();
+                    Toast.makeText(getApplicationContext(),
+                            "Attempting to center map on current location", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    locToggle = 0;
+                    locationFAB.setFloatingActionButtonColor(Color.CYAN);
+                    centerMapOnCampus();
+                    Toast.makeText(getApplicationContext(), "Centering map on campus",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        });
+    } // end of showLocationFAB
+
+    private void showBlobFAB() {
+        //Normal
+        blobFAB = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
+                .withButtonColor(Color.BLUE).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 86).create();
+
+        blobFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Implement Blobs Activity",
+                        Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(MapsActivity.this, BlobsActivity.class);
+                //startActivity(intent);
+
+            }
+
+        });
+
+
+    } // end of showBlobFAB
+
+    private void showItemFAB() {
+        itemsFAB = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
+                .withButtonColor(Color.GREEN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 156).create();
+        itemsFAB.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Implement Items List Activity",
+                        Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(MapsActivity.this, ItemsActivity.class);
+                //startActivity(intent);
+
+            }
+
+        });
+    } // end of showItemFAB
+
+    private void showCombineFAB() {
+        itemsFAB = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
+                .withButtonColor(Color.GREEN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 226).create();
+        itemsFAB.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Implement Combine Screen Activity",
+                        Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(MapsActivity.this, CombineActivity.class);
+                //startActivity(intent);
+
+            }
+
+        });
+    } // end of showCombineFAB
+
+    private void showSettingsFAB() {
+        itemsFAB = new FloatingActionButton.Builder(this)
+                .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
+                .withButtonColor(Color.GREEN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withMargins(0, 0, 16, 296).create();
+        itemsFAB.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Implement Settings Activity",
+                        Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(MapsActivity.this, SettingsActivity.class);
+                //startActivity(intent);
+
+            }
+
+        });
+    } // end of showItemFAB
 
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
@@ -95,7 +233,7 @@ public class MapsActivity extends FragmentActivity {
      */
     private void setUpMap() {
         // Centering Map on UMD
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(UMD, 15));
+        centerMapOnCampus();
         // Disabling Zoom Buttons
         mMap.getUiSettings().setZoomControlsEnabled(false);
 
@@ -103,15 +241,36 @@ public class MapsActivity extends FragmentActivity {
             @Override
             public void onMapClick(LatLng position) {
                 // mapGrid.getTile(position)
-                    // for each LatLngBounds [a cell in the mapGrid]
-                        // if(LatLngBounds.contains(position)) { tile = LatLngBounds }
-                    // showInfoScreen(tile)
-                
+                // for each LatLngBounds [a cell in the mapGrid]
+                // if(LatLngBounds.contains(position)) { tile = LatLngBounds }
+                // showInfoScreen(tile)
+
             }
         });
 
     }
 
+    /**
+     * Centers map on current location. If current location can not be resolved, it defaults to UMD
+     * location.
+     */
+    private void centerMapOnMyLocation() {
 
+        mMap.setMyLocationEnabled(true);
+
+        Location location = mMap.getMyLocation();
+        LatLng myLocation = UMD;
+
+        if (location != null) {
+            myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 18));
+    }
+
+    private void centerMapOnCampus() {
+        //mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(UMD_BOUNDS, 16));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(UMD, 14));
+
+    }
 
 }
