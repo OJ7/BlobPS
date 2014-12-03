@@ -246,6 +246,22 @@ public class MapsActivity extends FragmentActivity {
             @Override
             public void onMapClick(LatLng position) {
                 // grid.getTile(position)
+                AreaGrid tappedArea = null;
+                for(AreaGrid[] areaArray : grid){
+                    for(AreaGrid area : areaArray){
+                        if(area.getAreaBounds().contains(position)){
+                            tappedArea = area;
+                        }
+                    }
+                }
+                if(tappedArea != null){
+                    Toast.makeText(getApplicationContext(), "Tapped on area with ID: " + tappedArea.getAreaID(),
+                            Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Tapped outside of campus grid",
+                            Toast.LENGTH_SHORT).show();
+                }
                 // for each LatLngBounds [a cell in the grid]
                 // if(LatLngBounds.contains(position)) { tile = LatLngBounds }
                 // showInfoScreen(tile)
@@ -286,7 +302,7 @@ public class MapsActivity extends FragmentActivity {
             for (int col = 0; col < numAreas; col++) {
                 LatLng SW = new LatLng(NORTH - (row+1)*areaHeight, WEST - col*areaLength);
                 LatLng NE = new LatLng(NORTH - row*areaHeight, WEST - (col+1)*areaLength);
-                AreaGrid area = new AreaGrid(SW, NE, areaID);
+                AreaGrid area = new AreaGrid(SW, NE, areaID++);
                 // TODO - Add overlay on area
                 grid[row][col] = area;
             }

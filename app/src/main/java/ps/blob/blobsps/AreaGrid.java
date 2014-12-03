@@ -21,9 +21,16 @@ public class AreaGrid {
         return areaBounds;
     }
 
+    public int getAreaID(){
+        return areaID;
+    }
+
+
     public boolean tileContainsPoint(LatLng point){
         return areaBounds.contains(point);
     }
+
+
 
 
 }
