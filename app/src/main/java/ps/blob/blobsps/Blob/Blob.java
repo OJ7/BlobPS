@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import ps.blob.blobsps.Item;
 import ps.blob.blobsps.Special.Special;
+import ps.blob.blobsps.Special.SpecialCommand;
 
 public abstract class Blob {
     protected String blobName;
@@ -12,7 +13,7 @@ public abstract class Blob {
     protected int sp;
     protected int atk;
     protected int def;
-    protected Special special;
+    protected SpecialCommand special;
     protected double rarity;
     // recipe instead of wild because it will be true for all cases except
     // recipe cases
@@ -21,19 +22,17 @@ public abstract class Blob {
     protected String imageReference;
     protected HashMap<Double, Item> dropList;
 
-    public Blob(String name, int hp, int sp, int atk, int def, double rarity, boolean wild, String image, HashMap<Double, Item> dropList, int special) {
+    public Blob(String name, int hp, int sp, int atk, int def, double rarity, boolean recipe, String image, HashMap<Double, Item> dropList, int special) {
         this.blobName = name;
         this.hp = hp;
         this.sp = sp;
         this.atk = atk;
         this.def = def;
         this.rarity = rarity;
-        //this.wild = wild;
+        this.recipe = recipe;
         this.imageReference = image;
         this.dropList = dropList;
-        //How did you want to do this special? did you want something like a seed because in the spec it said
-        //int special. Either way I set up the constructor to take a seed so change it how you will
-        //this.special = Special(special);
+        this.special = new SpecialCommand(special);
     }
 
     public void attack(Blob blob) {
