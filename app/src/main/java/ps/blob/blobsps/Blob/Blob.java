@@ -4,15 +4,16 @@ import java.util.HashMap;
 
 import ps.blob.blobsps.Item;
 import ps.blob.blobsps.Special.Special;
+import ps.blob.blobsps.Special.SpecialCommand;
 
 public abstract class Blob {
     protected String blobName;
     protected final static int BLOB_TYPE = 0;
-    protected int hp;
+    protected double hp;
     protected int sp;
-    protected int atk;
-    protected int def;
-    protected Special special;
+    protected double atk;
+    protected double def;
+    protected SpecialCommand special;
     protected double rarity;
     // recipe instead of wild because it will be true for all cases except
     // recipe cases
@@ -21,31 +22,29 @@ public abstract class Blob {
     protected String imageReference;
     protected HashMap<Double, Item> dropList;
 
-    public Blob(String name, int hp, int sp, int atk, int def, double rarity, boolean wild, String image, HashMap<Double, Item> dropList, int special) {
+    public Blob(String name, double hp, int sp, double atk, double def, double rarity, boolean recipe, String image, HashMap<Double, Item> dropList, int special) {
         this.blobName = name;
         this.hp = hp;
         this.sp = sp;
         this.atk = atk;
         this.def = def;
         this.rarity = rarity;
-        //this.wild = wild;
+        this.recipe = recipe;
         this.imageReference = image;
         this.dropList = dropList;
-        //How did you want to do this special? did you want something like a seed because in the spec it said
-        //int special. Either way I set up the constructor to take a seed so change it how you will
-        //this.special = Special(special);
+        this.special = new SpecialCommand(special);
     }
 
     public void attack(Blob blob) {
-        int damage = this.atk - blob.getDef();
+        double damage = this.atk - blob.getDef();
         if (damage < 0) {
             damage = 0;
         }
         blob.receiveDamage(damage);
     }
 
-    public void receiveDamage(int damage) {
-        int newHp = this.getHp() - damage;
+    public void receiveDamage(double damage) {
+        double newHp = this.getHp() - damage;
         this.setHp(newHp);
     }
 
@@ -55,11 +54,11 @@ public abstract class Blob {
        // special.use(userBlob, enemyBlob);
     }
 
-    public int getHp() {
+    public double getHp() {
         return this.hp;
     }
 
-    public void setHp(int hp) {
+    public void setHp(double hp) {
         this.hp = hp;
     }
 
@@ -71,19 +70,19 @@ public abstract class Blob {
         this.sp = sp;
     }
 
-    public int getAtk() {
+    public double getAtk() {
         return this.atk;
     }
 
-    public void setAtk(int atk) {
+    public void setAtk(double atk) {
         this.atk = atk;
     }
 
-    public int getDef() {
+    public double getDef() {
         return this.def;
     }
 
-    public void setDef(int def) {
+    public void setDef(double def) {
         this.def = def;
     }
 
