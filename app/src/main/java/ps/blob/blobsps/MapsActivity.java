@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -251,7 +252,6 @@ public class MapsActivity extends FragmentActivity {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng position) {
-                // grid.getTile(position)
                 AreaGrid tappedArea = null;
                 for(AreaGrid[] areaArray : grid){
                     for(AreaGrid area : areaArray){
@@ -264,15 +264,14 @@ public class MapsActivity extends FragmentActivity {
                 if(tappedArea != null){
                     Toast.makeText(getApplicationContext(), "Tapped on area with ID: " + tappedArea.getAreaID(),
                             Toast.LENGTH_SHORT).show();
+                    if(tappedArea.getGroundOverlay() != null) {
+                        //tappedArea.removeGroundOverlay();
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Tapped outside of campus grid",
                             Toast.LENGTH_SHORT).show();
                 }
-                // for each LatLngBounds [a cell in the grid]
-                // if(LatLngBounds.contains(position)) { tile = LatLngBounds }
-                // showInfoScreen(tile)
-
             }
         });
 
@@ -313,10 +312,12 @@ public class MapsActivity extends FragmentActivity {
 
                 AreaGrid area = new AreaGrid(SW, NE, areaID++);
                 // TODO - Add overlay on area
-                GroundOverlayOptions areaOverlay = new GroundOverlayOptions()
+                GroundOverlayOptions areaOverlayOptions = new GroundOverlayOptions()
                         .image(BitmapDescriptorFactory.fromResource(R.drawable.grey_overlay))
+                        .transparency((float) 0.5)
                         .positionFromBounds(area.getAreaBounds());
-                mMap.addGroundOverlay(areaOverlay);
+                GroundOverlay areaOverlay = mMap.addGroundOverlay(areaOverlayOptions);
+                area.setGroundOverlay(areaOverlay);
                 grid[row][col] = area;
             }
         }
