@@ -130,7 +130,7 @@ public class MapsActivity extends FragmentActivity {
         //Normal
         blobFAB = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
-                .withButtonColor(Color.BLUE).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withButtonColor(Color.GREEN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 86).create();
 
         blobFAB.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +151,7 @@ public class MapsActivity extends FragmentActivity {
     private void showItemFAB() {
         itemsFAB = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
-                .withButtonColor(Color.GREEN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withButtonColor(Color.BLUE).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 156).create();
         itemsFAB.setOnClickListener(new View.OnClickListener() {
 
@@ -168,11 +168,11 @@ public class MapsActivity extends FragmentActivity {
     } // end of showItemFAB
 
     private void showCombineFAB() {
-        itemsFAB = new FloatingActionButton.Builder(this)
+        combineFAB = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
-                .withButtonColor(Color.GREEN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withButtonColor(Color.YELLOW).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 226).create();
-        itemsFAB.setOnClickListener(new View.OnClickListener() {
+        combineFAB.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -187,11 +187,11 @@ public class MapsActivity extends FragmentActivity {
     } // end of showCombineFAB
 
     private void showSettingsFAB() {
-        itemsFAB = new FloatingActionButton.Builder(this)
+        settingsFAB = new FloatingActionButton.Builder(this)
                 .withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
-                .withButtonColor(Color.GREEN).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
+                .withButtonColor(Color.GRAY).withGravity(Gravity.BOTTOM | Gravity.RIGHT)
                 .withMargins(0, 0, 16, 296).create();
-        itemsFAB.setOnClickListener(new View.OnClickListener() {
+        settingsFAB.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
