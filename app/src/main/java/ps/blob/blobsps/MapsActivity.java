@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
@@ -11,6 +12,8 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -242,6 +245,9 @@ public class MapsActivity extends FragmentActivity {
         // Disabling Zoom Buttons
         mMap.getUiSettings().setZoomControlsEnabled(false);
 
+        mMap.setMyLocationEnabled(true);
+        mMap.getMyLocation();
+
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng position) {
@@ -251,6 +257,7 @@ public class MapsActivity extends FragmentActivity {
                     for(AreaGrid area : areaArray){
                         if(area.getAreaBounds().contains(position)){
                             tappedArea = area;
+                            break;
                         }
                     }
                 }
@@ -277,8 +284,6 @@ public class MapsActivity extends FragmentActivity {
      */
     private void centerMapOnMyLocation() {
 
-        mMap.setMyLocationEnabled(true);
-
         Location location = mMap.getMyLocation();
         LatLng myLocation = UMD;
 
@@ -302,8 +307,16 @@ public class MapsActivity extends FragmentActivity {
             for (int col = 0; col < numAreas; col++) {
                 LatLng SW = new LatLng(NORTH - (row+1)*areaHeight, WEST - col*areaLength);
                 LatLng NE = new LatLng(NORTH - row*areaHeight, WEST - (col+1)*areaLength);
+                Log.i("MapsActivity", "areaID = " + areaID);
+                Log.i("MapsActivity", "SW = " + SW.toString());
+                Log.i("MapsActivity", "NE = " + NE.toString());
+
                 AreaGrid area = new AreaGrid(SW, NE, areaID++);
                 // TODO - Add overlay on area
+                GroundOverlayOptions areaOverlay = new GroundOverlayOptions()
+                        .image(BitmapDescriptorFactory.fromResource(R.drawable.grey_overlay))
+                        .positionFromBounds(area.getAreaBounds());
+                mMap.addGroundOverlay(areaOverlay);
                 grid[row][col] = area;
             }
         }
