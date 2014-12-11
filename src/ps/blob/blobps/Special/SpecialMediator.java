@@ -1,4 +1,4 @@
-package ps.blob.blobsps.Special;
+package ps.blob.blobps.Special;
 
 import java.util.HashMap;
 

@@ -1,7 +1,7 @@
-package ps.blob.blobsps.Blob;
+package ps.blob.blobps.Blob;
 
 import ps.blob.blobps.Item;
-import ps.blob.blobsps.Special.Special;
+import ps.blob.blobps.Special.Special;
 
 /**
  * Created by Jason on 12/3/2014.

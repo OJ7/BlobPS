@@ -1,6 +1,6 @@
-package ps.blob.blobsps.Special;
+package ps.blob.blobps.Special;
 
-import ps.blob.blobsps.Blob.Blob;
+import ps.blob.blobps.Blob.Blob;;
 
 /**
  * Created by Jason on 12/3/2014.

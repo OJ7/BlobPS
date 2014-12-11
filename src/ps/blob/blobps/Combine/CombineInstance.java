@@ -1,8 +1,8 @@
-package ps.blob.blobsps.Combine;
+package ps.blob.blobps.Combine;
 
 import java.util.Random;
 
-import ps.blob.blobsps.Blob.PersonalBlob;
+import ps.blob.blobps.Blob.PersonalBlob;
 
 /**
  * Created by Jason on 12/3/2014.

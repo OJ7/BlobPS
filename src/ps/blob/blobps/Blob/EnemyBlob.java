@@ -1,9 +1,9 @@
-package ps.blob.blobsps.Blob;
+package ps.blob.blobps.Blob;
 
 import java.util.List;
 
 import ps.blob.blobps.Item;
-import ps.blob.blobsps.Special.Special;
+import ps.blob.blobps.Special.Special;
 
 public class EnemyBlob extends Blob {
     protected String blobName;

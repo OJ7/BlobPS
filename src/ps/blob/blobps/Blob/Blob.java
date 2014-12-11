@@ -1,10 +1,10 @@
-package ps.blob.blobsps.Blob;
+package ps.blob.blobps.Blob;
 
 import java.util.HashMap;
 
 import ps.blob.blobps.Item;
-import ps.blob.blobsps.Special.Special;
-import ps.blob.blobsps.Special.SpecialCommand;
+import ps.blob.blobps.Special.Special;
+import ps.blob.blobps.Special.SpecialCommand;
 
 public abstract class Blob {
     protected String blobName;

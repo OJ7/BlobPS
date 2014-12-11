@@ -1,8 +1,8 @@
-package ps.blob.blobsps.Special;
+package ps.blob.blobps.Special;
 
 import java.util.HashMap;
 
-import ps.blob.blobsps.Blob.Blob;
+import ps.blob.blobps.Blob.Blob;
 
 public class Special {
     private String specialName;
