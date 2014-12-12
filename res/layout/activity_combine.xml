@@ -13,59 +13,82 @@
         android:padding="3dp" >
 
         <LinearLayout
-            android:id="@+id/personal_blob_info"
+            android:id="@+id/current_blob_info"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/personal_blob_name"
+                android:id="@+id/current_blob_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="My Blob" >
+                android:text="Current Blob" >
             </TextView>
 
             <ProgressBar
-                android:id="@+id/personal_blob_hp"
+                android:id="@+id/current_blob_hp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <ProgressBar
-                android:id="@+id/personal_blob_sp"
+                android:id="@+id/current_blob_sp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <View
+        <LinearLayout
+            android:id="@+id/hp_sp_holder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:paddingBottom="5dp" />
+
+            <TextView
+                android:id="@+id/combine_hp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="HP" />
+
+            <TextView
+                android:id="@+id/combine_sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="SP" />
+        </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/enemy_blob_info"
+            android:id="@+id/combined_blob_info"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/enemy_blob_name"
+                android:id="@+id/combined_blob_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enemy Blob" >
+                android:text="Combined Blob" >
             </TextView>
 
             <ProgressBar
-                android:id="@+id/enemy_blob_hp"
+                android:id="@+id/combined_blob_hp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <ProgressBar
-                android:id="@+id/enemy_blob_sp"
+                android:id="@+id/combined_blob_sp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -73,30 +96,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/battlefield"
+        android:id="@+id/combinefield"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
         android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2" >
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/enemy_blob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_weight="1"
-                android:src="@drawable/blue_blob" />
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -106,21 +110,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2" >
+            android:layout_weight="5" >
 
             <ImageView
-                android:id="@+id/personal_blob"
+                android:id="@+id/current_blob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:scaleX="-1"
-                android:src="@drawable/green_blob" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:src="@drawable/red_blob" />
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
     </LinearLayout>
 
     <LinearLayout
@@ -130,29 +134,32 @@
         android:layout_weight="1"
         android:padding="3dp" >
 
-        <Button
-            android:id="@+id/show_blobs_button"
+        <ImageView
+            android:id="@+id/left_blob"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
-            android:text="Blobs" />
+            android:paddingTop="13dp"
+            android:src="@drawable/green_blob" />
 
-        <Button
-            android:id="@+id/show_items_button"
+        <ImageView
+            android:id="@+id/middle_blob"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
-            android:text="Items" />
+            android:paddingBottom="5dp"
+            android:src="@drawable/blue_blob" />
 
-        <Button
-            android:id="@+id/run_away_button"
+        <ImageView
+            android:id="@+id/right_blob"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
-            android:text="Run" />
+            android:paddingTop="13dp"
+            android:src="@drawable/orange_blob" />
     </LinearLayout>
 
 </LinearLayout>
