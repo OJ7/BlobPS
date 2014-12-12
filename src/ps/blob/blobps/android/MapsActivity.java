@@ -1,5 +1,11 @@
-package ps.blob.blobps;
+package ps.blob.blobps.android;
 
+import ps.blob.blobps.R;
+import ps.blob.blobps.Map.AreaGrid;
+import ps.blob.blobps.Map.Map;
+import ps.blob.blobps.R.drawable;
+import ps.blob.blobps.R.id;
+import ps.blob.blobps.R.layout;
 import android.graphics.Color;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
@@ -33,6 +39,7 @@ public class MapsActivity extends FragmentActivity {
 			WEST = -76.931203;
 	private final LatLng UMD_NE = new LatLng(NORTH, EAST), UMD_SW = new LatLng(SOUTH, WEST);
 	private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
+	private Map map = new Map();
 
 	private final int numAreas = 4; // grid will be numAreas x numAreas
 	private AreaGrid[][] grid = new AreaGrid[numAreas][numAreas];

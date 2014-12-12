@@ -1,4 +1,4 @@
-package ps.blob.blobps;
+package ps.blob.blobps.Map;
 
 import com.google.android.gms.maps.model.GroundOverlay;
 import com.google.android.gms.maps.model.GroundOverlayOptions;

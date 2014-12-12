@@ -4,95 +4,141 @@ import java.util.HashMap;
 
 import ps.blob.blobps.Item;
 import ps.blob.blobps.Special.Special;
-import ps.blob.blobps.Special.SpecialCommand;
 
 public abstract class Blob {
-    protected String blobName;
-    protected final static int BLOB_TYPE = 0;
-    protected double hp;
+    protected String name;
+    public final static int PERSONAL = 1, ENEMY = 2;
+    protected int hp;
     protected int sp;
-    protected double atk;
-    protected double def;
-    protected SpecialCommand special;
+    protected int atk;
+    protected int def;
+    protected Special special;
     protected double rarity;
-    // recipe instead of wild because it will be true for all cases except
-    // recipe cases
-    protected boolean recipe;
     protected int tier;
     protected String imageReference;
     protected HashMap<Double, Item> dropList;
 
-    public Blob(String name, double hp, int sp, double atk, double def, double rarity, boolean recipe, String image, HashMap<Double, Item> dropList, int special) {
-        this.blobName = name;
+    public Blob(String name, int hp, int sp, int atk, int def, double rarity, String image, HashMap<Double, Item> dropList, Special special) {
+        this.name = name;
         this.hp = hp;
         this.sp = sp;
         this.atk = atk;
         this.def = def;
         this.rarity = rarity;
-        this.recipe = recipe;
         this.imageReference = image;
         this.dropList = dropList;
-        this.special = new SpecialCommand(special);
+        this.special = special;
     }
-
+    
+    public Blob(Blob blob){
+    	this.name = blob.name;
+        this.hp = blob.hp;
+        this.sp = blob.sp;
+        this.atk = blob.atk;
+        this.def = blob.def;
+        this.rarity = blob.rarity;
+        this.imageReference = blob.imageReference;
+        this.dropList = blob.dropList;
+        //this.special = new SpecialCommand(special);
+    }
+    
     public void attack(Blob blob) {
-        double damage = this.atk - blob.getDef();
+        int damage = this.atk - blob.getDef();
         if (damage < 0) {
             damage = 0;
         }
         blob.receiveDamage(damage);
     }
 
-    public void receiveDamage(double damage) {
-        double newHp = this.getHp() - damage;
-        this.setHp(newHp);
-    }
+    public abstract void receiveDamage(int damage);
 
-    public abstract void useItem(Item item);
+	public void useHealItem(Item item){
+		item.heal(this);
+	}
 
     public void useSpecial(Blob userBlob, Blob enemyBlob){
-       // special.use(userBlob, enemyBlob);
+       special.use(userBlob, enemyBlob);
     }
 
-    public double getHp() {
-        return this.hp;
+    public String getName() {
+		return name;
+	}
+
+	public int getHP() {
+        return hp;
     }
 
-    public void setHp(double hp) {
+    /**
+     * Raises blob's hp by specified amount. This is abstract because the
+     * Blob class is the definition of a blob, not an instance of it. Raising
+     * and lowering hp by nature is for instances.
+     * @param amount
+     */
+    public abstract void raiseHP(int amount);
+    /**
+     * Lowers blob's hp by specified amount. This is abstract because the
+     * Blob class is the definition of a blob, not an instance of it. Raising
+     * and lowering hp by nature is for instances.
+     * @param amount
+     */
+    public abstract void lowerHP(int amount);
+    
+    public void setHP(int hp) {
         this.hp = hp;
     }
 
-    public int getSp() {
+    public int getSP() {
         return this.sp;
     }
 
-    public void setSp(int sp) {
+    public void setSP(int sp) {
         this.sp = sp;
     }
-
-    public double getAtk() {
+    
+    /**
+     * Raises blob's sp by specified amount. This is abstract because the
+     * Blob class is the definition of a blob, not an instance of it. Raising
+     * and lowering sp by nature is for instances.
+     * @param amount
+     */
+    public abstract void raiseSP(int amount);
+    /**
+     * Lowers blob's sp by specified amount. This is abstract because the
+     * Blob class is the definition of a blob, not an instance of it. Raising
+     * and lowering sp by nature is for instances.
+     * @param amount
+     */
+    public abstract void lowerSP(int amount);
+    
+    public int getAtk() {
         return this.atk;
     }
 
-    public void setAtk(double atk) {
+    public void setAtk(int atk) {
         this.atk = atk;
     }
 
-    public double getDef() {
+    public int getDef() {
         return this.def;
     }
 
-    public void setDef(double def) {
+    public void setDef(int def) {
         this.def = def;
     }
+    
+    public Special getSpecial() {
+		return special;
+	}
 
-    public double getRarity() {
+	public double getRarity() {
         return this.rarity;
     }
 
     public int getTier() {
         return tier;
     }
+    
+    public abstract int getType();
 
     public String getImageReference() {
         return imageReference;

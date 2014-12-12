@@ -1,4 +1,4 @@
-package ps.blob.blobps;
+package ps.blob.blobps.android;
 
 /*
  * Giving credits to Jogan
