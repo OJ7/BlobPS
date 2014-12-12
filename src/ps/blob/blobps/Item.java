@@ -19,7 +19,7 @@ import ps.blob.blobps.Blob.Blob;
  */
 public class Item {
 
-	private final static int HEAL_25 = 825, HEAL_50 = 850, HEAL_100 = 8100,
+	public final static int HEAL_25 = 825, HEAL_50 = 850, HEAL_100 = 8100,
 			CAPTURE_70 = 370, CAPTURE_85 = 385, CAPTURE_100 = 3100;
 
 	public final static int HEAL = 8, CAPTURE = 3;
@@ -150,7 +150,7 @@ public class Item {
 		 */
 		int cap = 1000; //1000 to allow chanceNum to always be an integer
 		int chanceNum = (int) (chancePercent * 1000);
-		int numChosen = numPicker.nextInt(cap)+1; //+1 because nextInt is [0, n)
+		int numChosen = numPicker.nextInt(cap+1)+1; //+1 because nextInt is [0, n)
 		if(numChosen <= chanceNum){
 			return true;
 		}

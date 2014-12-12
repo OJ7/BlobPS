@@ -12,7 +12,7 @@ import ps.blob.blobps.Special.Special;
  * Slightly modified by Chijioke on 12/12/2014. (mostly resolve syntax errors)
  */
 public class CombineInstance {
-    public PersonalBlob doCombine(PersonalBlob base, PersonalBlob combine) {
+    public static PersonalBlob doCombine(PersonalBlob base, PersonalBlob combine) {
         String newName = base.getPersonalName()+combine.getPersonalName(); 
         String newPersonalName = base.getName()+combine.getName();
     	
@@ -41,11 +41,12 @@ public class CombineInstance {
         }
         PersonalBlob newBlob = new PersonalBlob(newPersonalName, base.getOwner(), 
         		newName, newHp, newSp, newAtk, newDef, newRarity, image, base.getDropList(), newSpecial);
+        newBlob.setTier(combineTier);
         Game.instance.addBlobToGame(new EnemyBlob(newBlob));
         return newBlob;
     }
 
-    private int hpAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
+    private static int hpAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
         double newHp = 0;
         if(combineTier == 1) {
             newHp = base.getHP() + combine.getHP()*.5;
@@ -59,7 +60,7 @@ public class CombineInstance {
         return (int) newHp;
     }
 
-    private int spAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
+    private static int spAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
         int newSp = 0;
         if(combineTier == 1) {
             newSp = base.getSP() + 1;
@@ -73,7 +74,7 @@ public class CombineInstance {
         return (int)newSp;
     }
 
-    private int atkAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
+    private static int atkAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
         double newAtk = 0;
         if(combineTier == 1) {
             newAtk = base.getAtk() + combine.getAtk()*.5;
@@ -87,7 +88,7 @@ public class CombineInstance {
         return (int) newAtk;
     }
 
-    private int defAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
+    private static int defAlgorithm(PersonalBlob base, PersonalBlob combine, int combineTier) {
         double newDef = 0;
         if(combineTier == 1) {
             newDef = base.getDef() + combine.getDef()*.5;

@@ -8,7 +8,7 @@ public class Special {
     private String name;
     private String description;
 
-    public Special(String description, String name, int specialCode) {
+    public Special(String name, String description, int specialCode) {
         this.name = name;
         this.description = description;
         this.specialCode = specialCode;
@@ -47,5 +47,9 @@ public class Special {
 
     public String getDescription() {
         return description;
+    }
+    
+    public String toString(){
+    	return name+" - "+description;
     }
 }

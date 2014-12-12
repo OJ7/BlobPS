@@ -13,12 +13,14 @@ public abstract class Blob {
     protected int atk;
     protected int def;
     protected Special special;
+    /** Chance of finding in the wild, Max chance is 5% */
     protected double rarity;
     protected int tier;
     protected String imageReference;
     protected HashMap<Double, Item> dropList;
 
-    public Blob(String name, int hp, int sp, int atk, int def, double rarity, String image, HashMap<Double, Item> dropList, Special special) {
+    public Blob(String name, int hp, int sp, int atk, int def, double rarity, 
+    		String image, HashMap<Double, Item> dropList, Special special) {
         this.name = name;
         this.hp = hp;
         this.sp = sp;
@@ -28,6 +30,7 @@ public abstract class Blob {
         this.imageReference = image;
         this.dropList = dropList;
         this.special = special;
+        this.tier = 1; //by default 1 for now.
     }
     
     public Blob(Blob blob){
@@ -138,6 +141,10 @@ public abstract class Blob {
         return tier;
     }
     
+    public void setTier(int tier) {
+    	this.tier = tier;
+    }
+    
     public abstract int getType();
 
     public String getImageReference() {
@@ -146,5 +153,12 @@ public abstract class Blob {
 
     public HashMap<Double, Item> getDropList() {
         return this.dropList;
+    }
+    
+    @Override
+    public String toString(){
+    	return name +"\n\tHP: "+hp+"\n\tSP: "+sp+"\n\tATK: "+atk+"\n\tDEF: "+def
+    			+"\n\tSpecial: "+special.getName()+"\n\tFind Chance: "+rarity
+    			+"\n\tTier: "+tier;
     }
 }

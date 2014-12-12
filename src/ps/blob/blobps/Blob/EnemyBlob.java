@@ -1,6 +1,7 @@
 package ps.blob.blobps.Blob;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ps.blob.blobps.Item;
 import ps.blob.blobps.Player;
@@ -22,6 +23,15 @@ public class EnemyBlob extends Blob {
 	 * This actually useful for seeing/getting damage taken from specials.
 	 */
 	int lastDamageTaken;
+	
+	
+	public EnemyBlob(String name, int hp, int sp, int atk, int def, double rarity,
+			String image, HashMap<Double, Item> dropList, Special special){
+		super(name, hp, sp, atk, def, rarity, image, dropList, special);
+		currentHP = hp;
+		currentSP = sp;
+		lastDamageTaken = 0;
+	}
 	
 	/**
 	 * Creates an enemy blob. This can also make a PersonalBlob into an 
