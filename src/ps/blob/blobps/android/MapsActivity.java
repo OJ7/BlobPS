@@ -346,10 +346,10 @@ public class MapsActivity extends FragmentActivity {
 			for (int col = 0; col < numAreas; col++) {
 				// TODO - fix calculating bounds [BUG]
 
-				LatLng SW = new LatLng(NORTH - (row + 1) * areaHeight, WEST
-						- col * areaLength);
-				LatLng NE = new LatLng(NORTH - row * areaHeight, WEST
-						- (col + 1) * areaLength);
+				LatLng SW = new LatLng(NORTH - (row + 1) * areaHeight, EAST
+						+ col * areaLength);
+				LatLng NE = new LatLng(NORTH - row * areaHeight, EAST
+						+ (col + 1) * areaLength);
 				Log.i("MapsActivity", "areaID = " + areaID);
 				Log.i("MapsActivity", "SW = " + SW.toString());
 				Log.i("MapsActivity", "NE = " + NE.toString());
