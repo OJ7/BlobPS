@@ -47,7 +47,7 @@ public class MapsActivity extends FragmentActivity {
 	private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
 	private Map map = new Map();
 
-	private final int numAreas = 4; // grid will be numAreas x numAreas
+	private final int numAreas = 8; // grid will be numAreas x numAreas
 	private AreaGrid[][] grid = new AreaGrid[numAreas][numAreas];
 
 	@Override
@@ -360,6 +360,9 @@ public class MapsActivity extends FragmentActivity {
 								.fromResource(R.drawable.grey_overlay))
 						.transparency((float) 0.5)
 						.positionFromBounds(area.getAreaBounds());
+				if(areaID == 11){
+					areaOverlayOptions.image(BitmapDescriptorFactory.fromResource(R.drawable.event_overlay));
+				}
 				GroundOverlay areaOverlay = mMap
 						.addGroundOverlay(areaOverlayOptions);
 				area.setGroundOverlay(areaOverlay);
