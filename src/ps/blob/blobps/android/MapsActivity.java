@@ -28,7 +28,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 public class MapsActivity extends FragmentActivity {
 	private static MapsActivity instance;
-	
+
 	private GoogleMap mMap; // Might be null if Google Play services APK is not
 							// available.
 
@@ -38,7 +38,7 @@ public class MapsActivity extends FragmentActivity {
 	private int locToggle = 0; // 0 = center on current location, 1 = center on
 								// map
 
-	private final LatLng UMD = new LatLng(38.989822, -76.940637);
+	private final LatLng UMD = new LatLng(38.986918, -76.942554);
 	private LatLng myLocation = UMD;
 
 	private final double NORTH = 39.001460, EAST = -76.956008,
@@ -246,10 +246,10 @@ public class MapsActivity extends FragmentActivity {
 						.show();
 				// TODO - launch combine activity
 
-				/*
-				 * Intent intent = new Intent(MapsActivity.this,
-				 * CombineActivity.class); startActivity(intent);
-				 */
+				Intent intent = new Intent(MapsActivity.this,
+						CombineActivity.class);
+				startActivity(intent);
+
 			}
 
 		});
@@ -345,8 +345,6 @@ public class MapsActivity extends FragmentActivity {
 		int areaID = 0;
 		for (int row = 0; row < numAreas; row++) {
 			for (int col = 0; col < numAreas; col++) {
-				// TODO - fix calculating bounds [BUG]
-
 				LatLng SW = new LatLng(NORTH - (row + 1) * areaHeight, EAST
 						+ col * areaLength);
 				LatLng NE = new LatLng(NORTH - row * areaHeight, EAST
@@ -359,10 +357,11 @@ public class MapsActivity extends FragmentActivity {
 				GroundOverlayOptions areaOverlayOptions = new GroundOverlayOptions()
 						.image(BitmapDescriptorFactory
 								.fromResource(R.drawable.grey_overlay))
-						.transparency((float) 0.5)
+						.transparency((float) 0.25)
 						.positionFromBounds(area.getAreaBounds());
-				if(areaID == 11){
-					areaOverlayOptions.image(BitmapDescriptorFactory.fromResource(R.drawable.event_overlay));
+				if (areaID == 11) {
+					areaOverlayOptions.image(BitmapDescriptorFactory
+							.fromResource(R.drawable.event_overlay));
 				}
 				GroundOverlay areaOverlay = mMap
 						.addGroundOverlay(areaOverlayOptions);
@@ -413,11 +412,11 @@ public class MapsActivity extends FragmentActivity {
 
 	}
 
-	public static final MapsActivity getInstance(){
+	public static final MapsActivity getInstance() {
 		return instance;
 	}
 
-	public final GoogleMap getGoogleMap(){
+	public final GoogleMap getGoogleMap() {
 		return mMap;
 	}
 }
