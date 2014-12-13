@@ -131,6 +131,10 @@ public class PersonalBlob extends Blob {
 	public String getPersonalName() {
 		return personalName;
 	}
+	
+	public void setPersonalName(String name){
+		this.personalName = name;
+	}
 
 	public int getType() {
 		return type;
@@ -139,5 +143,17 @@ public class PersonalBlob extends Blob {
 	public Player getOwner() {
 		return owner;
 	}
+	
+    @Override
+    public boolean equals(Object o){
+    	if(o == null){
+    		return false;
+    	} else if (!(o instanceof PersonalBlob)){
+    		return false;
+    	} else {
+    		PersonalBlob pb = (PersonalBlob) o;
+    		return pb.getPersonalName().equals(this.personalName);
+    	}
+    }
 }
 

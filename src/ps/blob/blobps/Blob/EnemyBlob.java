@@ -62,7 +62,7 @@ public class EnemyBlob extends Blob {
 	 * capture the blob, so you must call capture() on your own if it returns
 	 * true.</b>
 	 * <br/>
-	 * <b>This uses the item!</b>
+	 * <b>This uses the item!</b> 
 	 * <br/> 
 	 * This method is basically a theoretical capture. It is meant to keep
 	 * from having to do error throwing or null-checking in capture(). Again, only
@@ -149,4 +149,16 @@ public class EnemyBlob extends Blob {
 	public int getType() {
 		return type;
 	}
+	
+	@Override
+    public boolean equals(Object o){
+    	if(o == null){
+    		return false;
+    	} else if (!(o instanceof EnemyBlob)){
+    		return false;
+    	} else {
+    		EnemyBlob pb = (EnemyBlob) o;
+    		return pb.name.equals(this.name);
+    	}
+    }
 }

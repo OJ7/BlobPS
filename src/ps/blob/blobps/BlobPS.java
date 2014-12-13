@@ -13,6 +13,8 @@ import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 
+import ps.blob.blobps.Map.Map;
+
 /**
  * Master back-end class, controls most of the back-end.
  * Manages saving and loading (persistency) and android inputs
@@ -26,10 +28,13 @@ public class BlobPS {
 	private Game hardClearBackup = null;
 	private Game generalBackup = null;
 	private static int saveCounter = 1;
+	
+	private Map map;
 
 	/**Creates brand new game*/
 	public BlobPS(){
 		game = new Game();
+		map = new Map();
 		instance = this;
 	}
 	
@@ -219,6 +224,10 @@ public class BlobPS {
 	
 	public Game getGame() {
 		return game;
+	}
+	
+	public Map getMap() {
+		return map;
 	}
 	
 	public static final BlobPS getInstance(){

@@ -27,7 +27,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 public class MapsActivity extends FragmentActivity {
-
+	private static MapsActivity instance;
+	
 	private GoogleMap mMap; // Might be null if Google Play services APK is not
 							// available.
 
@@ -45,7 +46,6 @@ public class MapsActivity extends FragmentActivity {
 	private final LatLng UMD_NE = new LatLng(NORTH, EAST), UMD_SW = new LatLng(
 			SOUTH, WEST);
 	private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
-	private Map map = new Map();
 
 	private final int numAreas = 8; // grid will be numAreas x numAreas
 	private AreaGrid[][] grid = new AreaGrid[numAreas][numAreas];
@@ -58,6 +58,7 @@ public class MapsActivity extends FragmentActivity {
 		setUpMapIfNeeded();
 		setUpGrid(); // TODO - fix grid overlays
 		createMainMenu();
+		instance = this;
 	}
 
 	@Override
@@ -412,4 +413,11 @@ public class MapsActivity extends FragmentActivity {
 
 	}
 
+	public static final MapsActivity getInstance(){
+		return instance;
+	}
+
+	public final GoogleMap getGoogleMap(){
+		return mMap;
+	}
 }

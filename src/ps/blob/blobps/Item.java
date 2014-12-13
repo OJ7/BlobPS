@@ -74,12 +74,20 @@ public class Item {
 	}
 
 	/**
-	 * Returns an instance of an item, for use by player or blob
+	 * Returns an instance of an item, for use by player or blob.
 	 * @param itemCode
 	 * @return
 	 */
 	public Item getItemInstance(Item item){
 		return new Item(item);
+	}
+	
+	/**
+	 * Returns an instance of this item, for use by player or blob.
+	 * @return item instance
+	 */
+	public Item getThisItemsInstance(){
+		return new Item(this);
 	}
 
 	/**
@@ -190,4 +198,16 @@ public class Item {
 	public void setImageReference(String location){
 		imageReference = location;
 	}
+	
+    @Override
+    public boolean equals(Object o){
+    	if(o == null){
+    		return false;
+    	} else if (!(o instanceof Item)){
+    		return false;
+    	} else {
+    		Item i = (Item) o;
+    		return i.name.equals(this.name);
+    	}
+    }
 }

@@ -41,7 +41,7 @@ public abstract class Blob {
         this.def = blob.def;
         this.rarity = blob.rarity;
         this.imageReference = blob.imageReference;
-        this.dropList = blob.dropList;
+        this.dropList = new HashMap<Double, Item>(blob.dropList);
         //this.special = new SpecialCommand(special);
     }
     
@@ -161,4 +161,5 @@ public abstract class Blob {
     			+"\n\tSpecial: "+special.getName()+"\n\tFind Chance: "+rarity
     			+"\n\tTier: "+tier;
     }
+    
 }

@@ -30,6 +30,11 @@ public class Game implements Serializable {
 	private TreeMap<String, Item> allItems;
 	private TreeMap<String, Special> allSpecials;
 	private Player player;
+	
+	//Here because this class can be saved.
+	private static int nextPlayerID = 1;
+	
+	
 
 	/** Mins for completelyRandomBlob to secure a sense of balancing*/
 	private final static int RANDOM_HP_MIN = 10, RANDOM_SP_MIN = 1,
@@ -49,21 +54,21 @@ public class Game implements Serializable {
 		allItems = new TreeMap<String, Item>();
 		allSpecials = new TreeMap<String, Special>();
 
-		/* Blob */
 		defineBlobs();
-		/* Items */
 		defineItems();
-		/* Specials */
 		defineSpecials();
+		
+		nextPlayerID = 0;
 		
 		instance = this;
 	}
 
 	public Game(Game game){
-		this.allBlobs = game.allBlobs;
-		this.allItems = game.allItems;
-		this.allSpecials = game.allSpecials;
-		this.player =  game.player;
+		this.allBlobs = new TreeMap<String, EnemyBlob>(game.allBlobs);
+		this.allItems = new TreeMap<String, Item>(game.allItems);
+		this.allSpecials = new TreeMap<String, Special>(game.allSpecials);
+		this.player =  new Player(game.player);
+		this.nextPlayerID = game.nextPlayerID; //to be safe;
 		
 		instance = this;
 	}
@@ -400,6 +405,14 @@ public class Game implements Serializable {
 		return allSpecials;
 	}
 	
+	/**
+	 * Returns a new playerID and increments it.
+	 * @return next player ID
+	 */
+	public static int getNextPlayerID() {
+		return nextPlayerID++;
+	}
+
 	public static final Game getInstance(){
 		return instance;
 	}
