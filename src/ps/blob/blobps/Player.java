@@ -3,6 +3,7 @@ package ps.blob.blobps;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.TreeMap;
 
 import ps.blob.blobps.Blob.EnemyBlob;
 import ps.blob.blobps.Blob.PersonalBlob;
@@ -20,8 +21,14 @@ public class Player {
 	private int id;
 	/**[Blob's personal name, blob]*/
 	private HashMap<String, PersonalBlob> blobs;
+	/**Order of blobs (in preference) in player's list.
+	 * The first one is the one used in battle.
+	 */
+	private TreeMap<Integer, String> blobOrder;
 	private ArrayList<Item> items;
 	private Location location = null;
+	
+	private static int blobCounter = 1;
 
 	/**
 	 * Player constructor. This does NOT set the player's
@@ -31,6 +38,7 @@ public class Player {
 	 */
 	public Player(){
 		blobs = new HashMap<String, PersonalBlob>();
+		blobOrder = new TreeMap<Integer, String>();
 		items = new ArrayList<Item>();
 	}
 
@@ -66,7 +74,13 @@ public class Player {
 	 * @param blob
 	 */
 	public void addBlob(PersonalBlob blob){
+		if(blobs.containsKey(blob.getPersonalName())){
+			throw new IllegalArgumentException("Cannot add blob: personal names"
+					+ " must be unique");
+		}
 		blobs.put(blob.getPersonalName(), blob);
+		blobOrder.put(blobCounter, blob.getPersonalName());
+		blobCounter++;
 	}
 
 	/**
@@ -130,6 +144,33 @@ public class Player {
 	 */
 	public void removeBlob(String personalName){
 		blobs.remove(personalName);
+		
+		int blobNum = Integer.MAX_VALUE;
+		for(int i : blobOrder.keySet()){
+			//case blob to remove is the last one
+			if(blobOrder.get(i+1) == null){
+				/*the below do the same thing but the state of the list is
+				 * not the same. In the first no blob has been removed yet, 
+				 * where as in the second a blob has been removed and the
+				 * last node is being removed for decrementation.
+				 */
+				if(blobOrder.get(i).equals(personalName)){
+					blobOrder.remove(i);
+					blobCounter--;
+				} else if (blobNum != Integer.MAX_VALUE){
+					/* means a blob was removed, so
+					 * list size must be decremented
+					 */
+					blobOrder.remove(i);
+					blobCounter--;
+				}
+				break;  //don't want to continue
+			}
+			if(personalName.equals(blobOrder.get(i))){
+				blobNum = i;
+				blobOrder.put(i, blobOrder.get(i+1));
+			} 
+		}
 	}
 
 	/**
@@ -137,6 +178,7 @@ public class Player {
 	 */
 	public void clear(){
 		blobs.clear();
+		blobOrder.clear();
 		items.clear();
 	}
 
@@ -149,6 +191,66 @@ public class Player {
 		Location newL = BlobPS.getInstance().getMap().getCurrentLocation();
 		location =  newL == null ? old:newL;
 	}
+	
+	/**
+	 * Heals all blobs fully;
+	 */
+	public void healAllBlobs(){
+		for(PersonalBlob b : blobs.values()){
+			b.fullHeal();
+		}
+	}
+	
+	/**
+	 * Get's the first blob. Useful for getting the blob
+	 * you fight with by default in battle.
+	 * @return first blob
+	 */
+	public PersonalBlob getFirstBlob(){
+		return blobs.get(blobOrder.firstKey());
+	}
+	
+	/**
+	 * Get's the first blob that is alive. Null if none are alive.
+	 * @return first alive blob, null if none are.
+	 */
+	public PersonalBlob getFirstAliveBlob(){
+		for(int i : blobOrder.keySet()){
+			PersonalBlob blob = blobs.get(blobOrder.get(i));
+			if(!blob.isDead()){
+				return blob;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * @return true if all blobs are dead, false otherwise.
+	 */
+	public boolean allDead(){
+		return getFirstAliveBlob() == null;
+	}
+	
+	/**
+	 * Gets a blob by its personal name.
+	 * @param personalName
+	 * @return the blob
+	 */
+	public PersonalBlob getBlob(String personalName){
+		return blobs.get(personalName);
+	}
+	
+	/**
+	 * Gets a blob by its personal name, if it is alive. If not it will
+	 * return null.
+	 * @param personalName
+	 * @return The blob if it is alive, false otherwise.
+	 */
+	public PersonalBlob getAliveBlob(String personalName){
+		PersonalBlob b = getBlob(personalName);
+		return b.isDead() ? null:b;
+	}
+
 
 	/**
 	 * @param name

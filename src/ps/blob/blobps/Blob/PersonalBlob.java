@@ -66,6 +66,10 @@ public class PersonalBlob extends Blob {
 		lastDamageTaken = 0;
 	}
 	
+	public void fullHeal(){
+		currentHP = hp;
+	}
+	
 	public boolean isDead(){
 		return currentHP == 0;
 	}

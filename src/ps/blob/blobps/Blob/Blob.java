@@ -59,8 +59,8 @@ public abstract class Blob {
 		item.heal(this);
 	}
 
-    public void useSpecial(Blob userBlob, Blob enemyBlob){
-       special.use(userBlob, enemyBlob);
+    public void useSpecial(Blob enemyBlob){
+       special.use(this, enemyBlob);
     }
 
     public String getName() {
