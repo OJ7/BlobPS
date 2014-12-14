@@ -25,7 +25,8 @@ import android.widget.Toast;
 
 public class CombineActivity extends Activity {
 
-	private ImageView leftBlob, middleBlob, rightBlob;
+	String TAG = "CombineActivity";
+	private ImageView leftBlob, middleBlob, rightBlob, mainBlob;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +38,13 @@ public class CombineActivity extends Activity {
 		leftBlob = (ImageView) findViewById(R.id.left_blob);
 		middleBlob = (ImageView) findViewById(R.id.middle_blob);
 		rightBlob = (ImageView) findViewById(R.id.right_blob);
+		mainBlob = (ImageView) findViewById(R.id.current_blob);
 
 		// Setting listeners for blobs
 		leftBlob.setOnTouchListener(new CombineOnTouchListener());
 		middleBlob.setOnTouchListener(new CombineOnTouchListener());
 		rightBlob.setOnTouchListener(new CombineOnTouchListener());
+		mainBlob.setOnDragListener(new CombineDragListener());
 
 	}
 
@@ -93,8 +96,8 @@ public class CombineActivity extends Activity {
 	}
 
 	class CombineDragListener implements OnDragListener {
-		Drawable normalShape = getResources().getDrawable(R.drawable.ic_action_star);
-		Drawable targetShape = getResources().getDrawable(R.drawable.ic_launcher);
+
+		private String DEBUG_TAG = "Dragging";
 
 		@Override
 		public boolean onDrag(View v, DragEvent event) {
@@ -104,52 +107,39 @@ public class CombineActivity extends Activity {
 
 			// signal for the start of a drag and drop operation.
 				case DragEvent.ACTION_DRAG_STARTED:
-					// do nothing
+					Log.i(DEBUG_TAG, "Started Drag");
 					break;
 
-				// the drag point has entered the bounding box of the View
 				case DragEvent.ACTION_DRAG_ENTERED:
-					v.setBackground(targetShape); // change the shape of the view
+					Log.i(DEBUG_TAG, "Entered view");
 					break;
 
-				// the user has moved the drag shadow outside the bounding box of the View
 				case DragEvent.ACTION_DRAG_EXITED:
-					v.setBackground(normalShape); // change the shape of the view back to normal
+					Log.i(DEBUG_TAG, "Exited view");
+
 					break;
 
-				// drag shadow has been released, the drag point is within the bounding box of the
-				// View
 				case DragEvent.ACTION_DROP:
-					// TODO - implement target area
+					Log.i(DEBUG_TAG, "Dropped in view");
 
-					// NOTE: Below code doesn't work properly
-					// if the view is the big blob, we accept the drag item
-					if (v == findViewById(R.id.current_blob_layout)) {
-						View view = (View) event.getLocalState();
-						ViewGroup viewgroup = (ViewGroup) view.getParent();
-						// viewgroup.removeView(view);
-
-						LinearLayout containView = (LinearLayout) v;
-						// containView.addView(view);
-
+					if (v == findViewById(R.id.current_blob)) {
 						Context context = getApplicationContext();
 						Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG)
 								.show();
+						// TODO - implement combine (and maybe confirmation dialog)
 
-						view.setVisibility(View.VISIBLE);
 					} else {
-						View view = (View) event.getLocalState();
-						view.setVisibility(View.VISIBLE);
 						Context context = getApplicationContext();
-						Toast.makeText(context, "Drag to big blob to combine!", Toast.LENGTH_LONG)
+						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
 								.show();
+
 						break;
 					}
 					break;
 
-				// the drag and drop operation has concluded.
 				case DragEvent.ACTION_DRAG_ENDED:
-					v.setBackground(normalShape); // go back to normal shape
+					Log.i(DEBUG_TAG, "Ended drag");
+					break;
 
 				default:
 					break;
