@@ -3,9 +3,8 @@ package ps.blob.blobps.android;
 import ps.blob.blobps.R;
 import ps.blob.blobps.Map.AreaGrid;
 import ps.blob.blobps.Map.Map;
-import ps.blob.blobps.R.drawable;
-import ps.blob.blobps.R.id;
-import ps.blob.blobps.R.layout;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -16,7 +15,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,6 +54,8 @@ public class MapsActivity extends FragmentActivity {
 
 	private final int numAreas = 8; // grid will be numAreas x numAreas
 	private AreaGrid[][] grid = new AreaGrid[numAreas][numAreas];
+
+	final Context context = this;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -365,11 +370,29 @@ public class MapsActivity extends FragmentActivity {
 						}
 					}
 				}
-
 				if (tappedArea != null) { // Area is inside grid
-					Toast.makeText(getApplicationContext(),
-							"Tapped on area with ID: " + tappedArea.getAreaID(), Toast.LENGTH_SHORT)
-							.show();
+//					Toast.makeText(getApplicationContext(),
+//							"Tapped on area with ID: " + tappedArea.getAreaID(), Toast.LENGTH_SHORT)
+//							.show();
+					final Dialog dialog = new Dialog(context);
+					dialog.setContentView(R.layout.maps_info);
+					dialog.setTitle("area_name_goes_here");
+					
+					TextView text = (TextView) dialog.findViewById(R.id.text);
+					text.setText("area_info_goes_here");
+					ImageView image = (ImageView) dialog.findViewById(R.id.image);
+					image.setImageResource(R.drawable.ic_launcher);
+					
+					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+					
+					dialogButton.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+						}
+					});
+					
+					dialog.show();
 					if (tappedArea.getGroundOverlay() != null) { // For debugging purposes, comment
 																	// out in final version
 						tappedArea.removeGroundOverlay();
