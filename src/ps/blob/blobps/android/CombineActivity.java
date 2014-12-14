@@ -1,5 +1,6 @@
 package ps.blob.blobps.android;
 
+import java.util.ArrayList;
 
 import ps.blob.blobps.R;
 import android.app.Activity;
@@ -25,6 +26,7 @@ public class CombineActivity extends FragmentActivity {
 
 	private MultiViewPager mPager;
 	private FragmentStatePagerAdapter mAdapter;
+	public ArrayList<BlobPagerFragment> blobs = new ArrayList<BlobPagerFragment>();
 
 	// private ImageView leftBlob, middleBlob, rightBlob, mainBlob;
 	private ImageView middleBlob, mainBlob;
@@ -42,18 +44,24 @@ public class CombineActivity extends FragmentActivity {
 
 			@Override
 			public int getCount() {
-				return 4;
+				return Integer.MAX_VALUE;
 			}
 
 			@Override
 			public Fragment getItem(int position) {
-				return new BlobPagerFragment();
+				BlobPagerFragment blob = new BlobPagerFragment();
+				blobs.add(blob);
+				return blob;
 			}
+
+			public Fragment addFragment(View view, int position) {
+
+				return null;
+			}
+
 		};
 		mPager.setAdapter(mAdapter);
-		
-		
-		
+
 		// Getting Blob List View
 		final LayoutInflater factory = getLayoutInflater();
 		View view = factory.inflate(R.layout.fragment_combine_blob_list, null);
@@ -70,6 +78,12 @@ public class CombineActivity extends FragmentActivity {
 		// rightBlob.setOnTouchListener(new CombineOnTouchListener());
 		mainBlob.setOnDragListener(new CombineDragListener());
 
+		addBlob();
+
+	}
+
+	private void addBlob() {
+
 	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
@@ -82,37 +96,37 @@ public class CombineActivity extends FragmentActivity {
 		@Override
 		public boolean onTouch(View view, MotionEvent event) {
 			switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN: {
-					downY = event.getY();
-					return true;
-				}
-				case MotionEvent.ACTION_MOVE: {
-					upY = event.getY();
+			case MotionEvent.ACTION_DOWN: {
+				downY = event.getY();
+				return true;
+			}
+			case MotionEvent.ACTION_MOVE: {
+				upY = event.getY();
 
-					float deltaY = downY - upY;
+				float deltaY = downY - upY;
 
-					// swipe vertical?
-					if (Math.abs(deltaY) > MIN_DISTANCE_Y) {
-						Log.i(TAG, "swipe vertical...");
-						if (deltaY < 0) { // moving down
-							// Start your drag here if appropriate
-							return true;
-						}
-						if (deltaY > 0) { // moving up
-							// Or start your drag here if appropriate
+				// swipe vertical?
+				if (Math.abs(deltaY) > MIN_DISTANCE_Y) {
+					Log.i(TAG, "swipe vertical...");
+					if (deltaY < 0) { // moving down
+						// Start your drag here if appropriate
+						return true;
+					}
+					if (deltaY > 0) { // moving up
+						// Or start your drag here if appropriate
 
-							DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+						DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
 
-							view.startDrag(null, // data to be dragged
-									shadowBuilder, // drag shadow
-									view, // local data about the drag and drop operation
-									0 // no needed flags
-							);
+						view.startDrag(null, // data to be dragged
+								shadowBuilder, // drag shadow
+								view, // local data about the drag and drop operation
+								0 // no needed flags
+						);
 
-							return true;
-						}
+						return true;
 					}
 				}
+			}
 			}
 			return false;
 		}
@@ -130,43 +144,42 @@ public class CombineActivity extends FragmentActivity {
 			switch (event.getAction()) {
 
 			// signal for the start of a drag and drop operation.
-				case DragEvent.ACTION_DRAG_STARTED:
-					Log.i(DEBUG_TAG, "Started Drag");
+			case DragEvent.ACTION_DRAG_STARTED:
+				Log.i(DEBUG_TAG, "Started Drag");
+				break;
+
+			case DragEvent.ACTION_DRAG_ENTERED:
+				Log.i(DEBUG_TAG, "Entered view");
+				break;
+
+			case DragEvent.ACTION_DRAG_EXITED:
+				Log.i(DEBUG_TAG, "Exited view");
+
+				break;
+
+			case DragEvent.ACTION_DROP:
+				Log.i(DEBUG_TAG, "Dropped in view");
+
+				if (v == findViewById(R.id.current_blob)) {
+					Context context = getApplicationContext();
+					Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG).show();
+					// TODO - implement combine (and maybe confirmation dialog)
+
+				} else {
+					Context context = getApplicationContext();
+					Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
+							.show();
+
 					break;
+				}
+				break;
 
-				case DragEvent.ACTION_DRAG_ENTERED:
-					Log.i(DEBUG_TAG, "Entered view");
-					break;
+			case DragEvent.ACTION_DRAG_ENDED:
+				Log.i(DEBUG_TAG, "Ended drag");
+				break;
 
-				case DragEvent.ACTION_DRAG_EXITED:
-					Log.i(DEBUG_TAG, "Exited view");
-
-					break;
-
-				case DragEvent.ACTION_DROP:
-					Log.i(DEBUG_TAG, "Dropped in view");
-
-					if (v == findViewById(R.id.current_blob)) {
-						Context context = getApplicationContext();
-						Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG)
-								.show();
-						// TODO - implement combine (and maybe confirmation dialog)
-
-					} else {
-						Context context = getApplicationContext();
-						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
-								.show();
-
-						break;
-					}
-					break;
-
-				case DragEvent.ACTION_DRAG_ENDED:
-					Log.i(DEBUG_TAG, "Ended drag");
-					break;
-
-				default:
-					break;
+			default:
+				break;
 			}
 			return true;
 		}
