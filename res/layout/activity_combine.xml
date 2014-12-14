@@ -57,14 +57,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="HP" />
+                android:text="@string/hp" />
 
             <TextView
                 android:id="@+id/combine_sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="SP" />
+                android:text="@string/sp" />
+
         </LinearLayout>
 
         <LinearLayout

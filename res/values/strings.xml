@@ -4,5 +4,9 @@
     <string name="app_name">BlosPS</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_combine">CombineActivity</string>
+    <string name="title_activity_battle">BattleActivity</string>
+    
+    <string name="hp">HP</string>
+    <string name="sp">SP</string>
 
 </resources>

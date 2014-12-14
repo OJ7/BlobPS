@@ -28,6 +28,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 public class MapsActivity extends FragmentActivity {
+	
+	private String TAG = "MapsActivity";
+	
 	private static MapsActivity instance;
 
 	private GoogleMap mMap; // Might be null if Google Play services APK is not
@@ -180,8 +183,11 @@ public class MapsActivity extends FragmentActivity {
 		blobFAB.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getApplicationContext(), "Unimplemented - Blobs Listing",
-						Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent(MapsActivity.this, BattleActivity.class);
+				startActivity(intent);
+
+//				Toast.makeText(getApplicationContext(), "Unimplemented - Blobs Listing",
+	//					Toast.LENGTH_SHORT).show();
 			}
 		});
 	} // end of blobFABListener
@@ -224,7 +230,6 @@ public class MapsActivity extends FragmentActivity {
 				Toast.makeText(getApplicationContext(), "Implement Combine Screen Activity",
 						Toast.LENGTH_SHORT).show();
 				// TODO - launch combine activity
-
 				Intent intent = new Intent(MapsActivity.this, CombineActivity.class);
 				startActivity(intent);
 
@@ -320,9 +325,9 @@ public class MapsActivity extends FragmentActivity {
 			for (int col = 0; col < numAreas; col++) {
 				LatLng SW = new LatLng(NORTH - (row + 1) * areaHeight, EAST + col * areaLength);
 				LatLng NE = new LatLng(NORTH - row * areaHeight, EAST + (col + 1) * areaLength);
-				Log.i("MapsActivity", "areaID = " + areaID);
-				Log.i("MapsActivity", "SW = " + SW.toString());
-				Log.i("MapsActivity", "NE = " + NE.toString());
+				Log.i(TAG, "areaID = " + areaID);
+				Log.i(TAG, "SW = " + SW.toString());
+				Log.i(TAG, "NE = " + NE.toString());
 
 				AreaGrid area = new AreaGrid(SW, NE, areaID++);
 				GroundOverlayOptions areaOverlayOptions = new GroundOverlayOptions()
