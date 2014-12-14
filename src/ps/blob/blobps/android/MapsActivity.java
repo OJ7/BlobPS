@@ -1,15 +1,26 @@
 package ps.blob.blobps.android;
 
+import java.util.concurrent.TimeUnit;
+
 import ps.blob.blobps.R;
+import ps.blob.blobps.Map.Area;
 import ps.blob.blobps.Map.AreaGrid;
 import ps.blob.blobps.Map.Map;
 import ps.blob.blobps.R.drawable;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -36,6 +47,9 @@ public class MapsActivity extends FragmentActivity {
 	private GoogleMap mMap; // Might be null if Google Play services APK is not
 							// available.
 
+	Intent locatorService = null;
+	AlertDialog alertDialog = null;
+
 	private FloatingActionButton mainFAB, locationFAB, blobFAB, itemFAB, combineFAB;
 	private int expandFAB = 0; // 0 = collapsed, 1 = expanded
 	private int locToggle = 0; // 0 = center on current location, 1 = center on
@@ -61,6 +75,17 @@ public class MapsActivity extends FragmentActivity {
 		setUpGrid(); // TODO - fix grid overlays
 		createMainMenu();
 		instance = this;
+
+		getLocationInBackground(); // need to make this a service
+	}
+
+	private void getLocationInBackground() {
+		if (!startService()) {
+			CreateAlert("Error!", "Service Cannot be started");
+		} else {
+			Toast.makeText(MapsActivity.this, "Service Started", Toast.LENGTH_LONG).show();
+		}
+
 	}
 
 	@Override
@@ -310,12 +335,13 @@ public class MapsActivity extends FragmentActivity {
 		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(UMD, 14));
 	}
 
-	/**
+/**
 	 * Makes a grid to overlay on top of UMD Campus.
 	 * 
-	 * Done by making a new AreaGrid for each cell inside {@link #grid) by dividing {
+	 * Done by making a new AreaGrid for each cell inside {@link #grid) by dividing
+	 * 
 	 * @link #UMD_BOUNDS} into equal parts by Latitude and Longitude and adding an overlay from an
-	 * image onto that AreaGrid.
+	 *       image onto that AreaGrid.
 	 */
 	private void setUpGrid() {
 		double areaLength = Math.abs(EAST - WEST) / numAreas, areaHeight = Math.abs(NORTH - SOUTH)
@@ -355,16 +381,7 @@ public class MapsActivity extends FragmentActivity {
 		mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng position) {
-				AreaGrid tappedArea = null;
-				// Finds area that was tapped
-				for (AreaGrid[] areaArray : grid) {
-					for (AreaGrid area : areaArray) {
-						if (area.getAreaBounds().contains(position)) {
-							tappedArea = area;
-							break;
-						}
-					}
-				}
+				AreaGrid tappedArea = getAreaGrid(position);
 
 				if (tappedArea != null) { // Area is inside grid
 					Toast.makeText(getApplicationContext(),
@@ -372,7 +389,7 @@ public class MapsActivity extends FragmentActivity {
 							.show();
 					if (tappedArea.getGroundOverlay() != null) { // For debugging purposes, comment
 																	// out in final version
-						tappedArea.removeGroundOverlay();
+						//tappedArea.removeGroundOverlay();
 					}
 				} else { // Area is outside of grid
 					Toast.makeText(getApplicationContext(), "Tapped outside of campus grid",
@@ -383,6 +400,21 @@ public class MapsActivity extends FragmentActivity {
 
 	}
 
+	// Finds area that was tapped
+	public AreaGrid getAreaGrid(LatLng position) {
+		AreaGrid area = null;
+		// Finds area that was tapped
+		for (AreaGrid[] areaArray : grid) {
+			for (AreaGrid a : areaArray) {
+				if (a.getAreaBounds().contains(position)) {
+					area = a;
+					break;
+				}
+			}
+		}
+		return area;
+	}
+
 	public static final MapsActivity getInstance() {
 		return instance;
 	}
@@ -390,4 +422,152 @@ public class MapsActivity extends FragmentActivity {
 	public final GoogleMap getGoogleMap() {
 		return mMap;
 	}
+
+	public boolean removeOverlayAtCurrentLocation() {
+		AreaGrid area = getAreaGrid(myLocation);
+		if (area.getGroundOverlay() != null) {
+			area.removeGroundOverlay();
+		}
+
+		return false;
+	}
+
+	public boolean stopService() {
+		if (this.locatorService != null) {
+			this.locatorService = null;
+		}
+		return true;
+	}
+
+	public boolean startService() {
+		try {
+			// this.locatorService= new
+			// Intent(FastMainActivity.this,LocatorService.class);
+			// startService(this.locatorService);
+
+			FetchCordinates fetchCordinates = new FetchCordinates();
+			fetchCordinates.execute();
+			return true;
+		} catch (Exception error) {
+			return false;
+		}
+
+	}
+
+	public AlertDialog CreateAlert(String title, String message) {
+		AlertDialog alert = new AlertDialog.Builder(this).create();
+
+		alert.setTitle(title);
+
+		alert.setMessage(message);
+
+		return alert;
+
+	}
+
+	public class FetchCordinates extends AsyncTask<String, Integer, String> {
+		ProgressDialog progDialog = null;
+
+		public double lati = 0.0;
+		public double longi = 0.0;
+
+		public LocationManager mLocationManager;
+		public VeggsterLocationListener mVeggsterLocationListener;
+
+		@Override
+		protected void onPreExecute() {
+			mVeggsterLocationListener = new VeggsterLocationListener();
+			mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+			mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0,
+					mVeggsterLocationListener);
+
+			progDialog = new ProgressDialog(MapsActivity.this);
+			progDialog.setOnCancelListener(new OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					FetchCordinates.this.cancel(true);
+				}
+			});
+			progDialog.setMessage("Loading...");
+			progDialog.setIndeterminate(true);
+			progDialog.setCancelable(true);
+			progDialog.show();
+
+		}
+
+		@Override
+		protected void onCancelled() {
+			System.out.println("Cancelled by user!");
+			progDialog.dismiss();
+			mLocationManager.removeUpdates(mVeggsterLocationListener);
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			progDialog.dismiss();
+
+			Toast.makeText(MapsActivity.this, "LATITUDE :" + lati + " LONGITUDE :" + longi,
+					Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+
+			while (this.lati == 0.0) {
+
+			}
+			return null;
+		}
+
+		public class VeggsterLocationListener implements LocationListener {
+
+			@Override
+			public void onLocationChanged(Location location) {
+
+				int lat = (int) location.getLatitude(); // * 1E6);
+				int log = (int) location.getLongitude(); // * 1E6);
+				int acc = (int) (location.getAccuracy());
+
+				String info = location.getProvider();
+				try {
+
+					// LocatorService.myLatitude=location.getLatitude();
+
+					// LocatorService.myLongitude=location.getLongitude();
+
+					lati = location.getLatitude();
+					longi = location.getLongitude();
+					myLocation = new LatLng(lati, longi);
+					removeOverlayAtCurrentLocation();
+
+				} catch (Exception e) {
+					// progDailog.dismiss();
+					// Toast.makeText(getApplicationContext(),"Unable to get Location"
+					// , Toast.LENGTH_LONG).show();
+				}
+
+			}
+
+			@Override
+			public void onProviderDisabled(String provider) {
+				Log.i("OnProviderDisabled", "OnProviderDisabled");
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				Log.i("onProviderEnabled", "onProviderEnabled");
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status, Bundle extras) {
+				Log.i("onStatusChanged", "onStatusChanged");
+
+			}
+
+		}
+
+	}
+
 }
