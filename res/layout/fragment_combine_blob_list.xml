@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <FrameLayout
+        android:id="@+id/combine_blob_list"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        tools:ignore="UselessParent" >
+
+        <ImageView
+            android:id="@+id/middle_blob"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/blue_blob"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+</RelativeLayout>

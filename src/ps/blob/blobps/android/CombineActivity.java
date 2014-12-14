@@ -1,32 +1,33 @@
 package ps.blob.blobps.android;
 
+
 import ps.blob.blobps.R;
-import ps.blob.blobps.R.id;
-import ps.blob.blobps.R.layout;
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class CombineActivity extends Activity {
+public class CombineActivity extends FragmentActivity {
 
 	String TAG = "CombineActivity";
-	private ImageView leftBlob, middleBlob, rightBlob, mainBlob;
+
+	private MultiViewPager mPager;
+	private FragmentStatePagerAdapter mAdapter;
+
+	// private ImageView leftBlob, middleBlob, rightBlob, mainBlob;
+	private ImageView middleBlob, mainBlob;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +35,39 @@ public class CombineActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_combine);
 
+		// Adding MultiViewPager for blobs list
+		mPager = (MultiViewPager) findViewById(R.id.pager);
+
+		mAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+
+			@Override
+			public int getCount() {
+				return 4;
+			}
+
+			@Override
+			public Fragment getItem(int position) {
+				return new BlobPagerFragment();
+			}
+		};
+		mPager.setAdapter(mAdapter);
+		
+		
+		
+		// Getting Blob List View
+		final LayoutInflater factory = getLayoutInflater();
+		View view = factory.inflate(R.layout.fragment_combine_blob_list, null);
+
 		// Caching all widgets
-		leftBlob = (ImageView) findViewById(R.id.left_blob);
-		middleBlob = (ImageView) findViewById(R.id.middle_blob);
-		rightBlob = (ImageView) findViewById(R.id.right_blob);
+		// leftBlob = (ImageView) findViewById(R.id.left_blob);
+		middleBlob = (ImageView) view.findViewById(R.id.middle_blob);
+		// rightBlob = (ImageView) findViewById(R.id.right_blob);
 		mainBlob = (ImageView) findViewById(R.id.current_blob);
 
 		// Setting listeners for blobs
-		leftBlob.setOnTouchListener(new CombineOnTouchListener());
+		// leftBlob.setOnTouchListener(new CombineOnTouchListener());
 		middleBlob.setOnTouchListener(new CombineOnTouchListener());
-		rightBlob.setOnTouchListener(new CombineOnTouchListener());
+		// rightBlob.setOnTouchListener(new CombineOnTouchListener());
 		mainBlob.setOnDragListener(new CombineDragListener());
 
 	}
