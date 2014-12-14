@@ -47,16 +47,58 @@ public class BattleActivity extends Activity {
 		runButton = (Button) findViewById(R.id.run_away_button);
 		enemyBlob = (ImageView) findViewById(R.id.enemy_blob);
 
-		// Swipe gesture for enemy blob
-		enemyBlob.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(final View view, final MotionEvent event) {
-                mDetector.onTouchEvent(event);
-                return true;
-            }
-        });
+		setBattleGestures();
+		setButtonListeners();
 
 	} // end of onCreate
+
+	private void setButtonListeners() {
+
+		final String DEBUG_TAG = "ButtonListener";
+		
+		// Listener for Blob Button
+		blobButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO - Pull up Blobs List Fragment
+				Log.d(DEBUG_TAG, "Clicked Blobs Button");
+
+			}
+		});
+
+		// Listener for Items Button
+		itemsButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO - Pull up Items List Fragment
+				Log.d(DEBUG_TAG, "Clicked Items Button");
+				
+			}
+		});
+
+		// Listener for Run Button
+		runButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO - Run away from battle
+				Log.d(DEBUG_TAG, "Clicked Run Button");
+			}
+		});
+	}
+
+	private void setBattleGestures() {
+		enemyBlob.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(final View view, final MotionEvent event) {
+				mDetector.onTouchEvent(event);
+				return true;
+			}
+		});
+
+	}
 
 	class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
 		private static final String DEBUG_TAG = "Gestures";
@@ -64,8 +106,8 @@ public class BattleActivity extends Activity {
 		@Override
 		public boolean onSingleTapUp(MotionEvent event) {
 			Log.d(DEBUG_TAG, "onSingleTapUp: " + event.toString());
-			Toast.makeText(getApplicationContext(), "Tapped on Enemy Blob",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Tapped on Enemy Blob", Toast.LENGTH_SHORT)
+					.show();
 			// TODO - Perform normal attack here
 			return true;
 		}
@@ -74,8 +116,8 @@ public class BattleActivity extends Activity {
 		public boolean onFling(MotionEvent event1, MotionEvent event2, float velocityX,
 				float velocityY) {
 			Log.d(DEBUG_TAG, "onFling: " + event1.toString() + event2.toString());
-			Toast.makeText(getApplicationContext(), "Swiped on Enemy Blob",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Swiped on Enemy Blob", Toast.LENGTH_SHORT)
+					.show();
 			// TODO - Perform special attack here
 			return true;
 		}
