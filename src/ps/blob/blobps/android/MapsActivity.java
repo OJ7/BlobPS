@@ -28,9 +28,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 public class MapsActivity extends FragmentActivity {
-	
+
 	private String TAG = "MapsActivity";
-	
+
 	private static MapsActivity instance;
 
 	private GoogleMap mMap; // Might be null if Google Play services APK is not
@@ -186,8 +186,8 @@ public class MapsActivity extends FragmentActivity {
 				Intent intent = new Intent(MapsActivity.this, BattleActivity.class);
 				startActivity(intent);
 
-//				Toast.makeText(getApplicationContext(), "Unimplemented - Blobs Listing",
-	//					Toast.LENGTH_SHORT).show();
+				// Toast.makeText(getApplicationContext(), "Unimplemented - Blobs Listing",
+				// Toast.LENGTH_SHORT).show();
 			}
 		});
 	} // end of blobFABListener
@@ -313,8 +313,8 @@ public class MapsActivity extends FragmentActivity {
 	/**
 	 * Makes a grid to overlay on top of UMD Campus.
 	 * 
-	 * Done by making a new AreaGrid for each cell inside {@link #grid) by dividing
-	 * {@link #UMD_BOUNDS} into equal parts by Latitude and Longitude and adding an overlay from an
+	 * Done by making a new AreaGrid for each cell inside {@link #grid) by dividing {
+	 * @link #UMD_BOUNDS} into equal parts by Latitude and Longitude and adding an overlay from an
 	 * image onto that AreaGrid.
 	 */
 	private void setUpGrid() {
@@ -370,7 +370,8 @@ public class MapsActivity extends FragmentActivity {
 					Toast.makeText(getApplicationContext(),
 							"Tapped on area with ID: " + tappedArea.getAreaID(), Toast.LENGTH_SHORT)
 							.show();
-					if (tappedArea.getGroundOverlay() != null) {
+					if (tappedArea.getGroundOverlay() != null) { // For debugging purposes, comment
+																	// out in final version
 						tappedArea.removeGroundOverlay();
 					}
 				} else { // Area is outside of grid
