@@ -49,7 +49,7 @@ public class CombineActivity extends Activity {
 	}
 	
 	private void updateCombineBlobStats(View v){
-		
+		// TODO - Update the Combine Blob Stats here
 	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
@@ -64,7 +64,7 @@ public class CombineActivity extends Activity {
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN: {
 					downY = event.getY();
-					// TODO - Update the Combine Blob Stats here
+					
 					updateCombineBlobStats(view);
 					return true;
 				}
