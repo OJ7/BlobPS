@@ -47,6 +47,10 @@ public class CombineActivity extends Activity {
 		mainBlob.setOnDragListener(new CombineDragListener());
 
 	}
+	
+	private void updateCombineBlobStats(View v){
+		
+	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
 
@@ -60,6 +64,8 @@ public class CombineActivity extends Activity {
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN: {
 					downY = event.getY();
+					// TODO - Update the Combine Blob Stats here
+					updateCombineBlobStats(view);
 					return true;
 				}
 				case MotionEvent.ACTION_MOVE: {
