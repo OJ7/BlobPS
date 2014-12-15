@@ -192,6 +192,7 @@ public class MapsActivity extends FragmentActivity {
 			public void onClick(View v) {
 				Intent intent = new Intent(MapsActivity.this, BattleActivity.class);
 				startActivity(intent);
+				Log.i(TAG, "Clicked on Blob FAB");
 
 				// Toast.makeText(getApplicationContext(), "Unimplemented - Blobs Listing",
 				// Toast.LENGTH_SHORT).show();
@@ -215,6 +216,7 @@ public class MapsActivity extends FragmentActivity {
 			public void onClick(View v) {
 				Toast.makeText(getApplicationContext(), "Unimplemented - Item Listing",
 						Toast.LENGTH_SHORT).show();
+				Log.i(TAG, "Clicked on Item FAB");
 			}
 
 		});
@@ -237,6 +239,7 @@ public class MapsActivity extends FragmentActivity {
 				Toast.makeText(getApplicationContext(), "Implement Combine Screen Activity",
 						Toast.LENGTH_SHORT).show();
 				// TODO - launch combine activity
+				Log.i(TAG, "Clicked on Combine FAB");
 				Intent intent = new Intent(MapsActivity.this, CombineActivity.class);
 				startActivity(intent);
 
