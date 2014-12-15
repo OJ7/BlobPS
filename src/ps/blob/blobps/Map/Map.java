@@ -22,9 +22,8 @@ import com.google.android.gms.maps.model.LatLng;
  *
  */
 public class Map {
-	//LatLng numbers made less precise for easier calculations
-	private final double NORTH = 39, EAST = -77, SOUTH = 39,
-			WEST = -77;
+	private final double NORTH = 39.001460, EAST = -76.956008, SOUTH = 38.980446,
+			WEST = -76.931203;
 	private final LatLng UMD_NE = new LatLng(NORTH, EAST), 
 			UMD_SW = new LatLng(SOUTH, WEST);
 	private final int AREAS_ACROSS = 8, AREAS_DOWN = 8;
