@@ -7,12 +7,13 @@ import com.google.android.gms.games.Game;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import ps.blob.blobps.BlobPS;
-import ps.blob.blobps.BlobPSActivity;
 import ps.blob.blobps.R;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
 import ps.blob.blobps.Blob.Blob;
 import ps.blob.blobps.Blob.PersonalBlob;
+import ps.blob.blobps.Combine.CombineInstance;
+import android.R.integer;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -26,6 +27,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
@@ -45,6 +47,8 @@ public class CombineActivity extends BlobPSActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_combine);
 
+		CombineInstance combineInstance = new CombineInstance();
+
 		// Caching all widgets
 		currentBlobImage = (ImageView) findViewById(R.id.current_blob);
 		mainBlobImage = (ImageView) findViewById(R.id.main_blob);
@@ -61,22 +65,54 @@ public class CombineActivity extends BlobPSActivity {
 			Log.i(TAG, "Failed to get list of player's blobs");
 		}
 
-		// Adding blobs to scroll view
-		
+		// TEMP: adding random blob to list
+		try {
+			ArrayList<Blob> tmp = BlobPS.getInstance().getGame().createCompletelyRandomBlobs(5);
+			for (Blob b : tmp) {
+				blobList.add(b);
+			}
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			Log.i(TAG, "Failed to create random blobs");
+		}
 
+		
 		// Setting Main Blob as first Blob in list
 		Blob mainBlob = blobList.get(0);
-		mainBlob.getImageReference();
-
-		mainBlobImage.setImageResource(R.drawable.blue_blob);
+		// TODO - once implemented, get string for image 
+		mainBlobImage.setImageResource(R.drawable.ic_launcher);
+		
+		addBlobsToLayout();
 
 	}
+	
+	private void addBlobsToLayout() {
+		LinearLayout blobListLayout = (LinearLayout) findViewById(R.id.blob_list);
+		int i = 0;
+		for(Blob b : blobList){
+			if(i++ > 0){
+				ImageView imageView = new ImageView(getApplicationContext());
+				
+				b.getImageReference(); // TODO - add this to drawable once working
+				Drawable myDrawable = getResources().getDrawable(R.drawable.purple_blob);
+				imageView.setImageDrawable(myDrawable);
+				
+				// Setting width of image to be same as default
+				/*LayoutParams params = imageView.getLayoutParams();
+				params.width = 150;
+				imageView.setLayoutParams(params);*/
+				
+				imageView.setOnTouchListener(new CombineOnTouchListener());
+				//Adding image to layout
+				blobListLayout.addView(imageView);
+			}
+		}
+		
+	}
 
-	
-	
-	
 	private void updateCombineBlobStats(View v) {
 		// TODO - Update the Combine Blob Stats here
+		currentBlobImage = (ImageView) v;
 
 	}
 
@@ -92,7 +128,6 @@ public class CombineActivity extends BlobPSActivity {
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN: {
 				downY = event.getY();
-
 				updateCombineBlobStats(view);
 				return true;
 			}
@@ -155,14 +190,13 @@ public class CombineActivity extends BlobPSActivity {
 
 			case DragEvent.ACTION_DROP:
 				Log.i(DEBUG_TAG, "Dropped in view");
-
+				Context context = getApplicationContext();
 				if (v == findViewById(R.id.main_blob)) {
-					Context context = getApplicationContext();
+					
 					Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG).show();
 					// TODO - implement combine (and maybe confirmation dialog)
 
 				} else {
-					Context context = getApplicationContext();
 					Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
 							.show();
 
