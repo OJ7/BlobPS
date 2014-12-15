@@ -44,7 +44,6 @@ public class CombineInstance {
         		newName, newHp, newSp, newAtk, newDef, newRarity, image, base.getDropList(), newSpecial);
         newBlob.setTier(combineTier);
         Game.getInstance().addBlobToGame(new EnemyBlob(newBlob));
-        BlobPS.getInstance().getPlayer().addBlob(newBlob);
         return newBlob;
     }
 

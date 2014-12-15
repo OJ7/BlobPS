@@ -1,34 +1,19 @@
 package ps.blob.blobps.android;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 
-import com.google.android.gms.games.Game;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-
-import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R;
-import ps.blob.blobps.R.id;
-import ps.blob.blobps.R.layout;
 import ps.blob.blobps.Blob.Blob;
 import ps.blob.blobps.Blob.PersonalBlob;
 import ps.blob.blobps.Combine.CombineInstance;
-import android.R.integer;
-import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipDescription;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
@@ -113,9 +98,8 @@ public class CombineActivity extends BlobPSActivity {
 	}
 
 	private void updateCombineBlobStats(View v) {
-		// TODO - Update the Combine Blob Stats here
 		currentBlobImage = (ImageView) v;
-		currentBlob = blobTreeMap.get(v);
+		currentBlob = blobTreeMap.get(v.getId());
 		TextView currText = (TextView) findViewById(R.id.curr_blob_info);
 		TextView combText = (TextView) findViewById(R.id.comb_blob_info);
 
@@ -128,8 +112,6 @@ public class CombineActivity extends BlobPSActivity {
 
 		combText.setText("HP: " + temp.getHP() + "\n" + "SP: " + temp.getSP() + "\n" + "Atk: "
 				+ temp.getAtk() + "\n" + "Def: " + temp.getDef());
-		currentBlob = blobTreeMap.get(v.getId());
-
 	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
