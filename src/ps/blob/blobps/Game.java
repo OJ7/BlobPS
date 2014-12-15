@@ -170,7 +170,7 @@ public class Game implements Serializable {
 
 		int newTier = r.nextInt(3)+1;
 
-		String image = "";
+		String image = imageRandomizer();
 
 		HashMap<Double, Item> droplist = generateDroplist();
 
@@ -312,6 +312,11 @@ public class Game implements Serializable {
 		allSpecials.clear();
 	}
 
+	public String imageRandomizer(){
+		String[] setImage = {"blue_blob", "green_blob", "orange_blob", "purple_blob", "red_blob", "yellow_blob"};
+		return setImage[new Random().nextInt(setImage.length)];
+	}
+	
 	/**
 	 * Generates a name. If all possible names are taken, it will return
 	 * "AddMoreStringsx" where x is between (0,10000]. Returns null if there is

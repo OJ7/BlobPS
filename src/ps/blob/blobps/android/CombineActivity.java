@@ -50,11 +50,11 @@ public class CombineActivity extends BlobPSActivity {
 		CombineInstance combineInstance = new CombineInstance();
 
 		// Caching all widgets
-		currentBlobImage = (ImageView) findViewById(R.id.current_blob);
+		// currentBlobImage = (ImageView) findViewById(R.id.current_blob);
 		mainBlobImage = (ImageView) findViewById(R.id.main_blob);
 
 		// Setting listeners for blobs
-		currentBlobImage.setOnTouchListener(new CombineOnTouchListener());
+		// currentBlobImage.setOnTouchListener(new CombineOnTouchListener());
 		mainBlobImage.setOnDragListener(new CombineDragListener());
 
 		// Getting List of blobs
@@ -76,38 +76,37 @@ public class CombineActivity extends BlobPSActivity {
 			Log.i(TAG, "Failed to create random blobs");
 		}
 
-		
 		// Setting Main Blob as first Blob in list
 		Blob mainBlob = blobList.get(0);
-		// TODO - once implemented, get string for image 
-		mainBlobImage.setImageResource(R.drawable.ic_launcher);
-		
+		int imageResource = getResources().getIdentifier("drawable/" + mainBlob.getImageReference(), null,
+				getPackageName());
+		mainBlobImage.setImageResource(imageResource);
+
 		addBlobsToLayout();
 
 	}
-	
+
 	private void addBlobsToLayout() {
 		LinearLayout blobListLayout = (LinearLayout) findViewById(R.id.blob_list);
 		int i = 0;
-		for(Blob b : blobList){
-			if(i++ > 0){
+		for (Blob b : blobList) {
+			if (i++ > 0) {
 				ImageView imageView = new ImageView(getApplicationContext());
-				
-				b.getImageReference(); // TODO - add this to drawable once working
-				Drawable myDrawable = getResources().getDrawable(R.drawable.purple_blob);
+
+				int imageResource = getResources().getIdentifier(
+						"drawable/" + b.getImageReference(), null, getPackageName());
+				Drawable myDrawable = getResources().getDrawable(imageResource);
 				imageView.setImageDrawable(myDrawable);
-				
-				// Setting width of image to be same as default
-				/*LayoutParams params = imageView.getLayoutParams();
-				params.width = 150;
-				imageView.setLayoutParams(params);*/
-				
+
 				imageView.setOnTouchListener(new CombineOnTouchListener());
-				//Adding image to layout
+				// Adding image to layout
 				blobListLayout.addView(imageView);
+
+				imageView.getLayoutParams().width = 250;
+				imageView.setPadding(15, 0, 0, 15);
 			}
 		}
-		
+
 	}
 
 	private void updateCombineBlobStats(View v) {
@@ -126,38 +125,38 @@ public class CombineActivity extends BlobPSActivity {
 		@Override
 		public boolean onTouch(View view, MotionEvent event) {
 			switch (event.getAction()) {
-			case MotionEvent.ACTION_DOWN: {
-				downY = event.getY();
-				updateCombineBlobStats(view);
-				return true;
-			}
-			case MotionEvent.ACTION_MOVE: {
-				upY = event.getY();
+				case MotionEvent.ACTION_DOWN: {
+					downY = event.getY();
+					updateCombineBlobStats(view);
+					return true;
+				}
+				case MotionEvent.ACTION_MOVE: {
+					upY = event.getY();
 
-				float deltaY = downY - upY;
+					float deltaY = downY - upY;
 
-				// swipe vertical?
-				if (Math.abs(deltaY) > MIN_DISTANCE_Y) {
-					Log.i(TAG, "swipe vertical...");
-					if (deltaY < 0) { // moving down
-						// Start your drag here if appropriate
-						return true;
-					}
-					if (deltaY > 0) { // moving up
-						// Or start your drag here if appropriate
+					// swipe vertical?
+					if (Math.abs(deltaY) > MIN_DISTANCE_Y) {
+						Log.i(TAG, "swipe vertical...");
+						if (deltaY < 0) { // moving down
+							// Start your drag here if appropriate
+							return true;
+						}
+						if (deltaY > 0) { // moving up
+							// Or start your drag here if appropriate
 
-						DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+							DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
 
-						view.startDrag(null, // data to be dragged
-								shadowBuilder, // drag shadow
-								view, // local data about the drag and drop operation
-								0 // no needed flags
-						);
+							view.startDrag(null, // data to be dragged
+									shadowBuilder, // drag shadow
+									view, // local data about the drag and drop operation
+									0 // no needed flags
+							);
 
-						return true;
+							return true;
+						}
 					}
 				}
-			}
 			}
 			return false;
 		}
@@ -175,41 +174,42 @@ public class CombineActivity extends BlobPSActivity {
 			switch (event.getAction()) {
 
 			// signal for the start of a drag and drop operation.
-			case DragEvent.ACTION_DRAG_STARTED:
-				Log.i(DEBUG_TAG, "Started Drag");
-				break;
+				case DragEvent.ACTION_DRAG_STARTED:
+					Log.i(DEBUG_TAG, "Started Drag");
+					break;
 
-			case DragEvent.ACTION_DRAG_ENTERED:
-				Log.i(DEBUG_TAG, "Entered view");
-				break;
+				case DragEvent.ACTION_DRAG_ENTERED:
+					Log.i(DEBUG_TAG, "Entered view");
+					break;
 
-			case DragEvent.ACTION_DRAG_EXITED:
-				Log.i(DEBUG_TAG, "Exited view");
-
-				break;
-
-			case DragEvent.ACTION_DROP:
-				Log.i(DEBUG_TAG, "Dropped in view");
-				Context context = getApplicationContext();
-				if (v == findViewById(R.id.main_blob)) {
-					
-					Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG).show();
-					// TODO - implement combine (and maybe confirmation dialog)
-
-				} else {
-					Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
-							.show();
+				case DragEvent.ACTION_DRAG_EXITED:
+					Log.i(DEBUG_TAG, "Exited view");
 
 					break;
-				}
-				break;
 
-			case DragEvent.ACTION_DRAG_ENDED:
-				Log.i(DEBUG_TAG, "Ended drag");
-				break;
+				case DragEvent.ACTION_DROP:
+					Log.i(DEBUG_TAG, "Dropped in view");
+					Context context = getApplicationContext();
+					if (v == findViewById(R.id.main_blob)) {
 
-			default:
-				break;
+						Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG)
+								.show();
+						// TODO - implement combine (and maybe confirmation dialog)
+
+					} else {
+						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
+								.show();
+
+						break;
+					}
+					break;
+
+				case DragEvent.ACTION_DRAG_ENDED:
+					Log.i(DEBUG_TAG, "Ended drag");
+					break;
+
+				default:
+					break;
 			}
 			return true;
 		}
