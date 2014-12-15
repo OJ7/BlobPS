@@ -46,8 +46,9 @@ public class BlobPS {
 			} else if (args[3] == null){
 				new BlobPS();
 			}
+		} else {
+			new BlobPS();
 		}
-		new BlobPS();
 	}
 
 	/**Creates brand new game*/
