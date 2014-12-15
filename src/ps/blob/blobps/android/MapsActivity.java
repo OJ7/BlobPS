@@ -1,11 +1,14 @@
 package ps.blob.blobps.android;
 
 import ps.blob.blobps.R;
+import ps.blob.blobps.Map.Area;
 import ps.blob.blobps.Map.AreaGrid;
 import ps.blob.blobps.Map.Map;
+import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R.drawable;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
+import android.R.integer;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -47,22 +50,21 @@ public class MapsActivity extends FragmentActivity {
 	private int expandFAB = 0; // 0 = collapsed, 1 = expanded
 	private int locToggle = 0; // 0 = center on current location, 1 = center on
 								// map
-	
+
 	private final LatLng UMD = new LatLng(38.986918, -76.942554);
 	private LatLng myLocation = UMD;
-	
-	//A lot of this info is now in the Map class
-		/*
-	private final double NORTH = 39.001460, EAST = -76.956008, SOUTH = 38.980446,
-			WEST = -76.931203;
-	private final LatLng UMD_NE = new LatLng(NORTH, EAST), UMD_SW = new LatLng(SOUTH, WEST);
-	private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
 
+	// A lot of this info is now in the Map class
+	/*
+	 * private final double NORTH = 39.001460, EAST = -76.956008, SOUTH = 38.980446, WEST =
+	 * -76.931203; private final LatLng UMD_NE = new LatLng(NORTH, EAST), UMD_SW = new LatLng(SOUTH,
+	 * WEST); private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
+	 * 
+	 * 
+	 * private final int numAreas = 8; // grid will be numAreas x numAreas private AreaGrid[][] grid
+	 * = new AreaGrid[numAreas][numAreas];
+	 */
 
-	private final int numAreas = 8; // grid will be numAreas x numAreas
-	private AreaGrid[][] grid = new AreaGrid[numAreas][numAreas];
-	*/
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,6 +74,9 @@ public class MapsActivity extends FragmentActivity {
 		setUpGrid(); // TODO - fix grid overlays
 		createMainMenu();
 		instance = this;
+
+		// Setting up BlobPS
+		new BlobPS();
 	}
 
 	@Override
@@ -332,34 +337,25 @@ public class MapsActivity extends FragmentActivity {
 	 * @link #UMD_BOUNDS} into equal parts by Latitude and Longitude and adding an overlay from an
 	 *       image onto that AreaGrid.
 	 */
-	private void setUpGrid() {
-		//TODO Reimplement to work with new code.
+	private void setUpGrid() {		
+		// TODO Reimplement to work with new code.
 		/*
-		double areaLength = Math.abs(EAST - WEST) / numAreas, areaHeight = Math.abs(NORTH - SOUTH)
-				/ numAreas;
-		int areaID = 0;
-		for (int row = 0; row < numAreas; row++) {
-			for (int col = 0; col < numAreas; col++) {
-				LatLng SW = new LatLng(NORTH - (row + 1) * areaHeight, EAST + col * areaLength);
-				LatLng NE = new LatLng(NORTH - row * areaHeight, EAST + (col + 1) * areaLength);
-				Log.i(TAG, "areaID = " + areaID);
-				Log.i(TAG, "SW = " + SW.toString());
-				Log.i(TAG, "NE = " + NE.toString());
-
-				AreaGrid area = new AreaGrid(SW, NE, areaID++);
-				GroundOverlayOptions areaOverlayOptions = new GroundOverlayOptions()
-						.image(BitmapDescriptorFactory.fromResource(R.drawable.grey_overlay))
-						.transparency((float) 0.25).positionFromBounds(area.getAreaBounds());
-				if (areaID == 11) {
-					areaOverlayOptions.image(BitmapDescriptorFactory
-							.fromResource(R.drawable.event_overlay));
-				}
-				GroundOverlay areaOverlay = mMap.addGroundOverlay(areaOverlayOptions);
-				area.setGroundOverlay(areaOverlay);
-				grid[row][col] = area;
-			}
-		}
-		*/
+		 * double areaLength = Math.abs(EAST - WEST) / numAreas, areaHeight = Math.abs(NORTH -
+		 * SOUTH) / numAreas; int areaID = 0; for (int row = 0; row < numAreas; row++) { for (int
+		 * col = 0; col < numAreas; col++) { LatLng SW = new LatLng(NORTH - (row + 1) * areaHeight,
+		 * EAST + col * areaLength); LatLng NE = new LatLng(NORTH - row * areaHeight, EAST + (col +
+		 * 1) * areaLength); Log.i(TAG, "areaID = " + areaID); Log.i(TAG, "SW = " + SW.toString());
+		 * Log.i(TAG, "NE = " + NE.toString());
+		 * 
+		 * AreaGrid area = new AreaGrid(SW, NE, areaID++); GroundOverlayOptions areaOverlayOptions =
+		 * new GroundOverlayOptions()
+		 * .image(BitmapDescriptorFactory.fromResource(R.drawable.grey_overlay))
+		 * .transparency((float) 0.25).positionFromBounds(area.getAreaBounds()); if (areaID == 11) {
+		 * areaOverlayOptions.image(BitmapDescriptorFactory
+		 * .fromResource(R.drawable.event_overlay)); } GroundOverlay areaOverlay =
+		 * mMap.addGroundOverlay(areaOverlayOptions); area.setGroundOverlay(areaOverlay);
+		 * grid[row][col] = area; } }
+		 */
 	}
 
 	/**
@@ -373,51 +369,33 @@ public class MapsActivity extends FragmentActivity {
 		mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng position) {
-				//TODO: Reimplement with new map code.
+				// TODO: Reimplement with new map code.
 				/*
-				AreaGrid tappedArea = null;
-				// Finds area that was tapped
-				for (AreaGrid[] areaArray : grid) {
-					for (AreaGrid area : areaArray) {
-						if (area.getAreaBounds().contains(position)) {
-							tappedArea = area;
-							break;
-						}
-					}
-				}
-
-				if (tappedArea != null) { // Area is inside grid
-					// Toast.makeText(getApplicationContext(),
-					// "Tapped on area with ID: " + tappedArea.getAreaID(), Toast.LENGTH_SHORT)
-					// .show();
-					final Dialog dialog = new Dialog(context);
-					dialog.setContentView(R.layout.maps_info);
-					dialog.setTitle("area_name_goes_here");
-
-					TextView text = (TextView) dialog.findViewById(R.id.text);
-					text.setText("area_info_goes_here");
-					ImageView image = (ImageView) dialog.findViewById(R.id.image);
-					image.setImageResource(R.drawable.ic_launcher);
-
-					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-
-					dialogButton.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-
-					dialog.show();
-					if (tappedArea.getGroundOverlay() != null) { // For debugging purposes, comment
-																	// out in final version
-						tappedArea.removeGroundOverlay();
-					}
-				} else { // Area is outside of grid
-					Toast.makeText(getApplicationContext(), "Tapped outside of campus grid",
-							Toast.LENGTH_SHORT).show();
-				}
-				*/
+				 * AreaGrid tappedArea = null; // Finds area that was tapped for (AreaGrid[]
+				 * areaArray : grid) { for (AreaGrid area : areaArray) { if
+				 * (area.getAreaBounds().contains(position)) { tappedArea = area; break; } } }
+				 * 
+				 * if (tappedArea != null) { // Area is inside grid //
+				 * Toast.makeText(getApplicationContext(), // "Tapped on area with ID: " +
+				 * tappedArea.getAreaID(), Toast.LENGTH_SHORT) // .show(); final Dialog dialog = new
+				 * Dialog(context); dialog.setContentView(R.layout.maps_info);
+				 * dialog.setTitle("area_name_goes_here");
+				 * 
+				 * TextView text = (TextView) dialog.findViewById(R.id.text);
+				 * text.setText("area_info_goes_here"); ImageView image = (ImageView)
+				 * dialog.findViewById(R.id.image); image.setImageResource(R.drawable.ic_launcher);
+				 * 
+				 * Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+				 * 
+				 * dialogButton.setOnClickListener(new OnClickListener() {
+				 * 
+				 * @Override public void onClick(View v) { dialog.dismiss(); } });
+				 * 
+				 * dialog.show(); if (tappedArea.getGroundOverlay() != null) { // For debugging
+				 * purposes, comment // out in final version tappedArea.removeGroundOverlay(); } }
+				 * else { // Area is outside of grid Toast.makeText(getApplicationContext(),
+				 * "Tapped outside of campus grid", Toast.LENGTH_SHORT).show(); }
+				 */
 			}
 		});
 
