@@ -70,7 +70,7 @@
             </TextView>
         </LinearLayout>
     </LinearLayout>
-
+ 
     <LinearLayout
         android:id="@+id/combinefield"
         android:layout_width="match_parent"
