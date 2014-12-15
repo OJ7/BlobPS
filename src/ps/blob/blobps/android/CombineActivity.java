@@ -25,7 +25,7 @@ import android.widget.Toast;
 public class CombineActivity extends BlobPSActivity {
 
 	String TAG = "CombineActivity";
-	private ImageView currentBlobImage, mainBlobImage;
+	private ImageView mainBlobImage;
 	LinearLayout blobListLayout;
 	private ArrayList<Blob> blobList = new ArrayList<Blob>();
 	private TreeMap<Integer, Blob> blobTreeMap = new TreeMap<Integer, Blob>();
@@ -98,7 +98,6 @@ public class CombineActivity extends BlobPSActivity {
 	}
 
 	private void updateCombineBlobStats(View v) {
-		currentBlobImage = (ImageView) v;
 		currentBlob = blobTreeMap.get(v.getId());
 		TextView currText = (TextView) findViewById(R.id.curr_blob_info);
 		TextView combText = (TextView) findViewById(R.id.comb_blob_info);
