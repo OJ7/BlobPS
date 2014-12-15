@@ -71,6 +71,7 @@ public class Area {
 	 * @return the area
 	 */
 	public KnownArea toKnownArea() {
+		removeGroundOverlay();
 		return new KnownArea(this);
 	}
 
@@ -83,6 +84,7 @@ public class Area {
 	 * @return the area
 	 */
 	public KnownArea toKnownArea(String rank) {
+		removeGroundOverlay();
 		return new KnownArea(this, rank);
 	}
 
