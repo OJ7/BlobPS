@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
@@ -94,12 +95,42 @@ public class CombineActivity extends BlobPSActivity {
 				blobTreeMap.put(imageView.getId(), b);
 			}
 		}
+	}
 
+	private void showCombinedBlob(PersonalBlob newBlob) {
+		setContentView(R.layout.screen_combined_blob);
+
+		TextView blobName = (TextView) findViewById(R.id.combined_blob_name);
+		blobName.setText(newBlob.getPersonalName());
+
+		LinearLayout hpSPInfo = (LinearLayout) findViewById(R.id.hp_sp_info);
+		TextView hpTextView = new TextView(getApplicationContext());
+		TextView spTextView = new TextView(getApplicationContext());
+		hpTextView.setText("HP: " + newBlob.getHP());
+		spTextView.setText("SP: " + newBlob.getSP());
+		hpSPInfo.addView(hpTextView);
+		hpSPInfo.addView(spTextView);
+
+		LinearLayout atkDEFInfo = (LinearLayout) findViewById(R.id.atk_def_info);
+		TextView atkTextView = new TextView(getApplicationContext());
+		TextView defTextView = new TextView(getApplicationContext());
+		atkTextView.setText("ATK: " + newBlob.getAtk());
+		defTextView.setText("DEF: " + newBlob.getDef());
+		atkDEFInfo.addView(atkTextView);
+		atkDEFInfo.addView(defTextView);
+
+		LinearLayout root = (LinearLayout) findViewById(R.id.combine_screen_root_layout);
+		root.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 
 	private void updateCombineBlobStats(View v) {
 		currentBlob = blobTreeMap.get(v.getId());
-		TextView currText = (TextView) findViewById(R.id.curr_blob_info);
+		TextView currText = (TextView) findViewById(R.id.main_blob_info);
 		TextView combText = (TextView) findViewById(R.id.comb_blob_info);
 
 		currText.setText("HP: " + mainBlob.getHP() + "\n" + "SP: " + mainBlob.getSP() + "\n"
@@ -189,14 +220,13 @@ public class CombineActivity extends BlobPSActivity {
 					Log.i(DEBUG_TAG, "Dropped in view");
 					Context context = getApplicationContext();
 					if (v == findViewById(R.id.main_blob)) {
-
-						// TODO - implement combine (and maybe confirmation dialog)
 						PersonalBlob newBlob = combineInstance.doCombine((PersonalBlob) mainBlob,
 								(PersonalBlob) currentBlob);
 						Log.i(DEBUG_TAG, "Combined Blob! .... " + newBlob.getPersonalName());
 						Toast.makeText(context, "Blob Combined: " + newBlob.getPersonalName(),
 								Toast.LENGTH_LONG).show();
-						finish();
+						showCombinedBlob(newBlob);
+
 					} else {
 						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
 								.show();
