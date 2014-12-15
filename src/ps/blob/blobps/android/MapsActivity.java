@@ -332,7 +332,6 @@ public class MapsActivity extends FragmentActivity {
 		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(UMD, 14));
 	}
 
-
 	/**
 	 * NOTE: currently removes the grid overlays (instead of popup dialog) for testing purposes
 	 * 
@@ -345,41 +344,43 @@ public class MapsActivity extends FragmentActivity {
 			@Override
 			public void onMapClick(LatLng position) {
 				Area tappedArea = blobPS.getMap().getGrid().getAreaWithPoint(position);
-				
+
 				if (tappedArea != null) { // Area is inside grid //
-					final Dialog dialog = new Dialog(context); 
+					final Dialog dialog = new Dialog(context);
 					dialog.setContentView(R.layout.maps_info);
 					TextView text = (TextView) dialog.findViewById(R.id.text);
-					ImageView image = (ImageView) dialog.findViewById(R.id.image); 
+					ImageView image = (ImageView) dialog.findViewById(R.id.image);
 					image.setImageResource(R.drawable.ic_launcher);
-					if(tappedArea instanceof KnownArea) {
+					if (tappedArea instanceof KnownArea) {
 						dialog.setTitle(tappedArea.getName());
-						text.setText("Highest rank of blob you can find here: " + ((KnownArea)tappedArea).getRank());
-					}
-					else if(tappedArea instanceof UnknownArea) {
+						text.setText("Highest rank of blob you can find here: "
+								+ ((KnownArea) tappedArea).getRank());
+					} else if (tappedArea instanceof UnknownArea) {
 						dialog.setTitle("???");
 						text.setText("???");
-					}
-					else if(tappedArea instanceof EventArea) {
+					} else if (tappedArea instanceof EventArea) {
 						dialog.setTitle(tappedArea.getName() + ": Event!");
-						text.setText(((EventArea)tappedArea).getDescription());
+						text.setText(((EventArea) tappedArea).getDescription());
 					}
-				
+
 					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-				
+
 					dialogButton.setOnClickListener(new OnClickListener() {
-						@Override public void onClick(View v) { 
-							dialog.dismiss(); 
-						} 
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+						}
 					});
-					
+
 					dialog.show();
+					if (tappedArea.getGroundOverlay() != null) {
+						tappedArea.removeGroundOverlay();
+					}
 				}
-				
-				if (tappedArea.getGroundOverlay() != null) {  
-					tappedArea.removeGroundOverlay(); 
-				} else {
-					Toast.makeText(getApplicationContext(), "Tapped outside of campus grid", Toast.LENGTH_SHORT).show(); 
+
+				else {
+					Toast.makeText(getApplicationContext(), "Tapped outside of campus grid",
+							Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
