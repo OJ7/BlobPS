@@ -3,7 +3,10 @@ package ps.blob.blobps.android;
 import ps.blob.blobps.R;
 import ps.blob.blobps.Map.Area;
 import ps.blob.blobps.Map.AreaGrid;
+import ps.blob.blobps.Map.EventArea;
+import ps.blob.blobps.Map.KnownArea;
 import ps.blob.blobps.Map.Map;
+import ps.blob.blobps.Map.UnknownArea;
 import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R.drawable;
 import ps.blob.blobps.R.id;
@@ -342,17 +345,25 @@ public class MapsActivity extends FragmentActivity {
 			@Override
 			public void onMapClick(LatLng position) {
 				Area tappedArea = blobPS.getMap().getGrid().getAreaWithPoint(position);
-				String areaName = tappedArea.getName();
-
+				
 				if (tappedArea != null) { // Area is inside grid //
 					final Dialog dialog = new Dialog(context); 
 					dialog.setContentView(R.layout.maps_info);
-					dialog.setTitle(areaName);
-				
 					TextView text = (TextView) dialog.findViewById(R.id.text);
-					text.setText("area_info_goes_here"); 
 					ImageView image = (ImageView) dialog.findViewById(R.id.image); 
 					image.setImageResource(R.drawable.ic_launcher);
+					if(tappedArea instanceof KnownArea) {
+						dialog.setTitle(tappedArea.getName());
+						text.setText("Highest rank of blob you can find here: " + ((KnownArea)tappedArea).getRank());
+					}
+					else if(tappedArea instanceof UnknownArea) {
+						dialog.setTitle("???");
+						text.setText("???");
+					}
+					else if(tappedArea instanceof EventArea) {
+						dialog.setTitle(tappedArea.getName() + ": Event!");
+						text.setText(((EventArea)tappedArea).getDescription());
+					}
 				
 					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
 				
@@ -364,6 +375,7 @@ public class MapsActivity extends FragmentActivity {
 					
 					dialog.show();
 				}
+				
 				if (tappedArea.getGroundOverlay() != null) {  
 					tappedArea.removeGroundOverlay(); 
 				} else {
