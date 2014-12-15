@@ -33,7 +33,7 @@
             android:label="@string/title_activity_battle" >
         </activity>
         <activity
-            android:name=".BlobPSActivity"
+            android:name="ps.blob.blobps.android.BlobPSActivity"
             android:label="@string/title_activity_blob_ps" >
         </activity>
     </application>

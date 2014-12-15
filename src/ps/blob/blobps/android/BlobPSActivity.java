@@ -1,5 +1,6 @@
-package ps.blob.blobps;
+package ps.blob.blobps.android;
 
+import ps.blob.blobps.BlobPS;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;

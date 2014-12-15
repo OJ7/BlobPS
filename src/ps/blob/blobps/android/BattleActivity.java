@@ -1,7 +1,6 @@
 package ps.blob.blobps.android;
 
 import ps.blob.blobps.BlobPS;
-import ps.blob.blobps.BlobPSActivity;
 import ps.blob.blobps.R;
 import ps.blob.blobps.Battle.BattleInstance;
 import ps.blob.blobps.Blob.EnemyBlob;
