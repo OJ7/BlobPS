@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-     android:background="@drawable/forest_background" >
+    android:orientation="vertical" 
+     android:background="@drawable/forest_background">
 
     <LinearLayout
         android:id="@+id/blobs_info"
@@ -20,24 +20,6 @@
             android:layout_weight="2"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/current_blob_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Current Blob" >
-            </TextView>
-
-            <ProgressBar
-                android:id="@+id/current_blob_hp"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ProgressBar
-                android:id="@+id/current_blob_sp"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
@@ -53,20 +35,6 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingBottom="5dp" />
 
-            <TextView
-                android:id="@+id/combine_hp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/hp" />
-
-            <TextView
-                android:id="@+id/combine_sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/sp" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -75,25 +43,6 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/combined_blob_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Combined Blob" >
-            </TextView>
-
-            <ProgressBar
-                android:id="@+id/combined_blob_hp"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ProgressBar
-                android:id="@+id/combined_blob_sp"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
 
@@ -104,31 +53,57 @@
         android:layout_weight="3"
         android:orientation="vertical" >
 
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.15"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="Combined!"
+            android:textAppearance="@style/AppBaseTheme"
+            android:textSize="50sp" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
         <LinearLayout
-            android:id="@+id/main_blob_layout"
+            android:id="@+id/current_blob_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5" >
 
             <ImageView
-                android:id="@+id/main_blob"
+                android:id="@+id/current_blob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_weight="3"
                 android:src="@drawable/red_blob" />
+
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2" />
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="167dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.15"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/hp" />
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/combine_sp"
+        android:layout_width="164dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/sp" />
 
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView1"
@@ -140,9 +115,7 @@
             android:id="@+id/blob_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:padding="3dp" >
-           
         </LinearLayout>
     </HorizontalScrollView>
 
