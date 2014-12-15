@@ -258,7 +258,9 @@ public class BlobPS {
 	 * @return
 	 */
 	public static final BlobPS getInstance(){
-		return instance;
+		if (instance == null)
+            instance = new BlobPS();
+        return instance;
 	}
 	
 	public Player getPlayer(){

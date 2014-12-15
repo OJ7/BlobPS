@@ -1,6 +1,7 @@
 package ps.blob.blobps.android;
 
 import ps.blob.blobps.BlobPS;
+import ps.blob.blobps.BlobPSActivity;
 import ps.blob.blobps.R;
 import ps.blob.blobps.Battle.BattleInstance;
 import ps.blob.blobps.Blob.EnemyBlob;
@@ -28,7 +29,7 @@ import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class BattleActivity extends Activity {
+public class BattleActivity extends BlobPSActivity {
 
 	private String TAG = "BattleActivity";
 

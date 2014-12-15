@@ -7,6 +7,7 @@ import com.google.android.gms.games.Game;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import ps.blob.blobps.BlobPS;
+import ps.blob.blobps.BlobPSActivity;
 import ps.blob.blobps.R;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
@@ -32,11 +33,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class CombineActivity extends Activity {
+public class CombineActivity extends BlobPSActivity {
 
 	String TAG = "CombineActivity";
 	private ImageView currentBlobImage, mainBlobImage;
-	private ArrayList<PersonalBlob> blobList = new ArrayList<PersonalBlob>();
+	private ArrayList<Blob> blobList = new ArrayList<Blob>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,31 +55,26 @@ public class CombineActivity extends Activity {
 
 		// Getting List of blobs
 		try {
-			blobList.addAll(BlobPS.getInstance().getGame().getPlayer().getBlobs().values());
+			blobList.addAll(bps().getGame().getPlayer().getBlobs().values());
 		} catch (NullPointerException e) {
 			// TODO: handle exception
 			Log.i(TAG, "Failed to get list of player's blobs");
 		}
 
-		// TEMP: adding random blob to list
-		try {
-			ArrayList<Blob> tmp = BlobPS.getInstance().getGame().createCompletelyRandomBlobs(5);
-			for (Blob b : tmp) {
-				blobList.add((PersonalBlob) b);
-			}
-		} catch (NullPointerException e) {
-			// TODO: handle exception
-			Log.i(TAG, "Failed to create random blobs");
-		}
+		// Adding blobs to scroll view
+		
 
 		// Setting Main Blob as first Blob in list
-		//PersonalBlob mainBlob = blobList.get(0);
-		// mainBlob.getImageReference()
+		Blob mainBlob = blobList.get(0);
+		mainBlob.getImageReference();
 
 		mainBlobImage.setImageResource(R.drawable.blue_blob);
 
 	}
 
+	
+	
+	
 	private void updateCombineBlobStats(View v) {
 		// TODO - Update the Combine Blob Stats here
 
