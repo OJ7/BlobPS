@@ -62,8 +62,8 @@ public class AreaGrid {
 
 		for (int y = 0; y < areasDown; y++) {
 			for (int x = 0; x < areasAcross; x++) {
-				double areaLatSW = latSW + (latInc * (double) y);
-				double areaLongSW = longSW + (longInc * (double) x);
+				double areaLatSW = latNE - (latInc * ((double) y + 1));
+				double areaLongSW = longNE + (longInc * (double) x);
 				double areaLatNE = areaLatSW + latInc;
 				double areaLongNE = areaLongSW + longInc;
 				LatLng areaSW = new LatLng(areaLatSW, areaLongSW);
