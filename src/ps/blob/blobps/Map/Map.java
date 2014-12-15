@@ -30,6 +30,7 @@ public class Map {
 	private AreaGrid grid;
 	private Thread process;
 	private BattleInstance battleToDo;
+	BlobPS instance;
 	/**chance of battle happening out of 100%. 
 	 * Decimal precision is 3 (x.x% or 0.xxx);
 	 */
@@ -39,11 +40,12 @@ public class Map {
 	 * Map constructor. <b>This class can only be called after a game object
 	 * has been constructed</b>
 	 */
-	public Map(){
+	public Map(final BlobPS instance){
+		this.instance = instance;
 		grid = new AreaGrid(UMD_SW, UMD_NE, AREAS_ACROSS, AREAS_DOWN);
 		createRandomEvents(2);
 		process = new Thread(){
-			Player player = BlobPS.getInstance().getPlayer(); 
+			Player player = instance.getPlayer(); 
 
 			@Override
 			public void run() {
@@ -53,7 +55,7 @@ public class Map {
 				if(curr.getType() == Area.KNOWN){
 					if(timeToBattle()){
 						EnemyBlob enemy = getEnemyBasedOnAreaRank(curr.getRank());
-						battleToDo = BlobPS.getInstance().getGame().battle(player, enemy);
+						battleToDo = instance.getGame().battle(player, enemy);
 						//at this point the battle must be handled outside of the class
 						try {
 							wait();
@@ -159,7 +161,7 @@ public class Map {
 					grid.getArea(x, y).toEventArea(desc));
 			
 			int maxReturn = 3;
-			for(EnemyBlob b : BlobPS.getInstance().getGame().getAllBlobs().values()){
+			for(EnemyBlob b : instance.getGame().getAllBlobs().values()){
 				if(maxReturn < 1){
 					break;
 				}
@@ -170,7 +172,7 @@ public class Map {
 			}
 			
 			maxReturn = 3;
-			for(Item i : BlobPS.getInstance().getGame().getAllItems().values()){
+			for(Item i : instance.getGame().getAllItems().values()){
 				if(maxReturn < 1){
 					break;
 				}
@@ -183,7 +185,7 @@ public class Map {
 			//in case above did not give items or blobs
 			if(area.getBlobRewardList().isEmpty()
 					&& area.getItemRewardList().isEmpty()){
-				Item item = BlobPS.getInstance().getGame().getAllItems().get("Cookie");
+				Item item = instance.getGame().getAllItems().get("Cookie");
 				area.addReward(item, r.nextInt(2)+1);
 			}
 			
@@ -218,7 +220,7 @@ public class Map {
 	 * @return an enemy blob
 	 */
 	private EnemyBlob getEnemyBasedOnAreaRank(String rank){
-		TreeMap<String, EnemyBlob> blobs = BlobPS.getInstance().getGame().getAllBlobs();
+		TreeMap<String, EnemyBlob> blobs = instance.getGame().getAllBlobs();
 		EnemyBlob enemy = null;
 		Random r = new Random();
 		switch(rank){

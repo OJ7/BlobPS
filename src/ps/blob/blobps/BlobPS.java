@@ -53,10 +53,10 @@ public class BlobPS {
 
 	/**Creates brand new game*/
 	public BlobPS(){
-		game = new Game();
-		map = new Map();
-		game.getPlayer().setLocation(map.getCurrentLocation());
 		instance = this;
+		game = new Game();
+		map = new Map(instance);
+		game.getPlayer().setLocation(map.getCurrentLocation());
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class BlobPS {
 		} else {
 			game = loadGame(filename);
 		}
-		map = new Map();
+		map = new Map(instance);
 		game.getPlayer().setLocation(map.getCurrentLocation());
 		instance = this;
 	}
