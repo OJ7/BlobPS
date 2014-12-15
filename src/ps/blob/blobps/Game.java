@@ -54,9 +54,9 @@ public class Game implements Serializable {
 		allItems = new TreeMap<String, Item>();
 		allSpecials = new TreeMap<String, Special>();
 
-		defineBlobs();
 		defineItems();
 		defineSpecials();
+		defineBlobs();
 		
 		nextPlayerID = 0;
 		
