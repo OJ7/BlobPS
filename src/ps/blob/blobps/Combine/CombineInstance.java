@@ -2,6 +2,7 @@ package ps.blob.blobps.Combine;
 
 import java.util.Random;
 
+import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.Game;
 import ps.blob.blobps.Blob.EnemyBlob;
 import ps.blob.blobps.Blob.PersonalBlob;
@@ -43,6 +44,7 @@ public class CombineInstance {
         		newName, newHp, newSp, newAtk, newDef, newRarity, image, base.getDropList(), newSpecial);
         newBlob.setTier(combineTier);
         Game.getInstance().addBlobToGame(new EnemyBlob(newBlob));
+        BlobPS.getInstance().getPlayer().addBlob(newBlob);
         return newBlob;
     }
 

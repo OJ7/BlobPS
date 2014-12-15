@@ -47,7 +47,7 @@ public class CombineActivity extends BlobPSActivity {
 	private ImageView currentBlobImage, mainBlobImage;
 	LinearLayout blobListLayout;
 	private ArrayList<Blob> blobList = new ArrayList<Blob>();
-	private TreeMap<ImageView, Blob> blobTreeMap = new TreeMap<ImageView, Blob>(); 
+	private TreeMap<Integer, Blob> blobTreeMap = new TreeMap<Integer, Blob>();
 	CombineInstance combineInstance;
 	Blob mainBlob, currentBlob;
 
@@ -60,12 +60,10 @@ public class CombineActivity extends BlobPSActivity {
 		combineInstance = new CombineInstance();
 
 		// Caching all widgets
-		// currentBlobImage = (ImageView) findViewById(R.id.current_blob);
 		mainBlobImage = (ImageView) findViewById(R.id.main_blob);
 		blobListLayout = (LinearLayout) findViewById(R.id.blob_list);
 
 		// Setting listeners for blobs
-		// currentBlobImage.setOnTouchListener(new CombineOnTouchListener());
 		mainBlobImage.setOnDragListener(new CombineDragListener());
 
 		// Getting List of blobs
@@ -76,14 +74,14 @@ public class CombineActivity extends BlobPSActivity {
 		}
 
 		// TEMP: adding random blob to list
-		try {
+		/*try {
 			ArrayList<Blob> tmp = BlobPS.getInstance().getGame().createCompletelyRandomBlobs(5);
 			for (Blob b : tmp) {
 				blobList.add(b);
 			}
 		} catch (NullPointerException e) {
 			Log.i(TAG, "Failed to create random blobs");
-		}
+		}*/
 
 		// Setting Main Blob as first Blob in list
 		mainBlob = blobList.get(0);
@@ -113,7 +111,8 @@ public class CombineActivity extends BlobPSActivity {
 
 				imageView.getLayoutParams().width = 250;
 				imageView.setPadding(15, 0, 0, 15);
-				blobTreeMap.put(imageView, b);
+				
+				blobTreeMap.put(imageView.getId(), b);
 			}
 		}
 
@@ -122,6 +121,7 @@ public class CombineActivity extends BlobPSActivity {
 	private void updateCombineBlobStats(View v) {
 		// TODO - Update the Combine Blob Stats here
 		currentBlobImage = (ImageView) v;
+<<<<<<< HEAD
 		currentBlob = blobTreeMap.get(v);
 		TextView currText = (TextView) findViewById(R.id.curr_blob_info);
 		TextView combText = (TextView) findViewById(R.id.comb_blob_info);
@@ -138,6 +138,11 @@ public class CombineActivity extends BlobPSActivity {
 				"SP: " + temp.getSP() + "\n" +
 				"Atk: " + temp.getAtk() + "\n" +
 				"Def: " + temp.getDef());
+=======
+
+		currentBlob = blobTreeMap.get(v.getId());
+
+>>>>>>> origin/master
 	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
@@ -217,11 +222,13 @@ public class CombineActivity extends BlobPSActivity {
 					Context context = getApplicationContext();
 					if (v == findViewById(R.id.main_blob)) {
 
-						Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG)
-								.show();
 						// TODO - implement combine (and maybe confirmation dialog)
-						//combineInstance.doCombine(mainBlob, combine)
-
+						PersonalBlob newBlob = combineInstance.doCombine((PersonalBlob) mainBlob,
+								(PersonalBlob) currentBlob);
+						Log.i(DEBUG_TAG, "Combined Blob! .... " + newBlob.getPersonalName());
+						Toast.makeText(context, "Blob Combined: " + newBlob.getPersonalName(), Toast.LENGTH_LONG)
+								.show();
+						finish();
 					} else {
 						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
 								.show();
