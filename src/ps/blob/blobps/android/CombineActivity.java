@@ -9,9 +9,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R;
-import ps.blob.blobps.Map.EventArea;
-import ps.blob.blobps.Map.KnownArea;
-import ps.blob.blobps.Map.UnknownArea;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
 import ps.blob.blobps.Blob.Blob;
@@ -19,7 +16,6 @@ import ps.blob.blobps.Blob.PersonalBlob;
 import ps.blob.blobps.Combine.CombineInstance;
 import android.R.integer;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
@@ -74,14 +70,12 @@ public class CombineActivity extends BlobPSActivity {
 		}
 
 		// TEMP: adding random blob to list
-		/*try {
-			ArrayList<Blob> tmp = BlobPS.getInstance().getGame().createCompletelyRandomBlobs(5);
-			for (Blob b : tmp) {
-				blobList.add(b);
-			}
-		} catch (NullPointerException e) {
-			Log.i(TAG, "Failed to create random blobs");
-		}*/
+		/*
+		 * try { ArrayList<Blob> tmp =
+		 * BlobPS.getInstance().getGame().createCompletelyRandomBlobs(5); for (Blob b : tmp) {
+		 * blobList.add(b); } } catch (NullPointerException e) { Log.i(TAG,
+		 * "Failed to create random blobs"); }
+		 */
 
 		// Setting Main Blob as first Blob in list
 		mainBlob = blobList.get(0);
@@ -111,7 +105,7 @@ public class CombineActivity extends BlobPSActivity {
 
 				imageView.getLayoutParams().width = 250;
 				imageView.setPadding(15, 0, 0, 15);
-				
+
 				blobTreeMap.put(imageView.getId(), b);
 			}
 		}
@@ -121,28 +115,21 @@ public class CombineActivity extends BlobPSActivity {
 	private void updateCombineBlobStats(View v) {
 		// TODO - Update the Combine Blob Stats here
 		currentBlobImage = (ImageView) v;
-<<<<<<< HEAD
 		currentBlob = blobTreeMap.get(v);
 		TextView currText = (TextView) findViewById(R.id.curr_blob_info);
 		TextView combText = (TextView) findViewById(R.id.comb_blob_info);
-		
-		currText.setText("HP: " + mainBlob.getHP() + "\n" +
-				"SP: " + mainBlob.getSP() + "\n" +
-				"Atk: " + mainBlob.getAtk() + "\n" +
-				"Def: " + mainBlob.getDef());
-		
-		@SuppressWarnings("static-access")
-		PersonalBlob temp = combineInstance.doCombine((PersonalBlob) mainBlob, (PersonalBlob) currentBlob);
-		
-		combText.setText("HP: " + temp.getHP() + "\n" +
-				"SP: " + temp.getSP() + "\n" +
-				"Atk: " + temp.getAtk() + "\n" +
-				"Def: " + temp.getDef());
-=======
 
+		currText.setText("HP: " + mainBlob.getHP() + "\n" + "SP: " + mainBlob.getSP() + "\n"
+				+ "Atk: " + mainBlob.getAtk() + "\n" + "Def: " + mainBlob.getDef());
+
+		@SuppressWarnings("static-access")
+		PersonalBlob temp = combineInstance.doCombine((PersonalBlob) mainBlob,
+				(PersonalBlob) currentBlob);
+
+		combText.setText("HP: " + temp.getHP() + "\n" + "SP: " + temp.getSP() + "\n" + "Atk: "
+				+ temp.getAtk() + "\n" + "Def: " + temp.getDef());
 		currentBlob = blobTreeMap.get(v.getId());
 
->>>>>>> origin/master
 	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
@@ -226,8 +213,8 @@ public class CombineActivity extends BlobPSActivity {
 						PersonalBlob newBlob = combineInstance.doCombine((PersonalBlob) mainBlob,
 								(PersonalBlob) currentBlob);
 						Log.i(DEBUG_TAG, "Combined Blob! .... " + newBlob.getPersonalName());
-						Toast.makeText(context, "Blob Combined: " + newBlob.getPersonalName(), Toast.LENGTH_LONG)
-								.show();
+						Toast.makeText(context, "Blob Combined: " + newBlob.getPersonalName(),
+								Toast.LENGTH_LONG).show();
 						finish();
 					} else {
 						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
