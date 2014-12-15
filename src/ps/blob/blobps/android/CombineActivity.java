@@ -9,6 +9,9 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 
 import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R;
+import ps.blob.blobps.Map.EventArea;
+import ps.blob.blobps.Map.KnownArea;
+import ps.blob.blobps.Map.UnknownArea;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
 import ps.blob.blobps.Blob.Blob;
@@ -16,6 +19,7 @@ import ps.blob.blobps.Blob.PersonalBlob;
 import ps.blob.blobps.Combine.CombineInstance;
 import android.R.integer;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
@@ -34,6 +38,7 @@ import android.view.View.DragShadowBuilder;
 import android.view.View.OnDragListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class CombineActivity extends BlobPSActivity {
@@ -117,9 +122,22 @@ public class CombineActivity extends BlobPSActivity {
 	private void updateCombineBlobStats(View v) {
 		// TODO - Update the Combine Blob Stats here
 		currentBlobImage = (ImageView) v;
-		
 		currentBlob = blobTreeMap.get(v);
-
+		TextView currText = (TextView) findViewById(R.id.curr_blob_info);
+		TextView combText = (TextView) findViewById(R.id.comb_blob_info);
+		
+		currText.setText("HP: " + mainBlob.getHP() + "\n" +
+				"SP: " + mainBlob.getSP() + "\n" +
+				"Atk: " + mainBlob.getAtk() + "\n" +
+				"Def: " + mainBlob.getDef());
+		
+		@SuppressWarnings("static-access")
+		PersonalBlob temp = combineInstance.doCombine((PersonalBlob) mainBlob, (PersonalBlob) currentBlob);
+		
+		combText.setText("HP: " + temp.getHP() + "\n" +
+				"SP: " + temp.getSP() + "\n" +
+				"Atk: " + temp.getAtk() + "\n" +
+				"Def: " + temp.getDef());
 	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
