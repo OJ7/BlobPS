@@ -47,18 +47,22 @@ public class MapsActivity extends FragmentActivity {
 	private int expandFAB = 0; // 0 = collapsed, 1 = expanded
 	private int locToggle = 0; // 0 = center on current location, 1 = center on
 								// map
-
+	
 	private final LatLng UMD = new LatLng(38.986918, -76.942554);
 	private LatLng myLocation = UMD;
-
+	
+	//A lot of this info is now in the Map class
+		/*
 	private final double NORTH = 39.001460, EAST = -76.956008, SOUTH = 38.980446,
 			WEST = -76.931203;
 	private final LatLng UMD_NE = new LatLng(NORTH, EAST), UMD_SW = new LatLng(SOUTH, WEST);
 	private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
 
+
 	private final int numAreas = 8; // grid will be numAreas x numAreas
 	private AreaGrid[][] grid = new AreaGrid[numAreas][numAreas];
-
+	*/
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -329,6 +333,8 @@ public class MapsActivity extends FragmentActivity {
 	 *       image onto that AreaGrid.
 	 */
 	private void setUpGrid() {
+		//TODO Reimplement to work with new code.
+		/*
 		double areaLength = Math.abs(EAST - WEST) / numAreas, areaHeight = Math.abs(NORTH - SOUTH)
 				/ numAreas;
 		int areaID = 0;
@@ -353,6 +359,7 @@ public class MapsActivity extends FragmentActivity {
 				grid[row][col] = area;
 			}
 		}
+		*/
 	}
 
 	/**
@@ -366,6 +373,8 @@ public class MapsActivity extends FragmentActivity {
 		mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng position) {
+				//TODO: Reimplement with new map code.
+				/*
 				AreaGrid tappedArea = null;
 				// Finds area that was tapped
 				for (AreaGrid[] areaArray : grid) {
@@ -408,6 +417,7 @@ public class MapsActivity extends FragmentActivity {
 					Toast.makeText(getApplicationContext(), "Tapped outside of campus grid",
 							Toast.LENGTH_SHORT).show();
 				}
+				*/
 			}
 		});
 
