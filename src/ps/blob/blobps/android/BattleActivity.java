@@ -1,12 +1,19 @@
 package ps.blob.blobps.android;
 
+import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R;
+import ps.blob.blobps.Battle.BattleInstance;
+import ps.blob.blobps.Blob.EnemyBlob;
 import ps.blob.blobps.R.layout;
+import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -16,6 +23,8 @@ import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -25,7 +34,7 @@ public class BattleActivity extends Activity {
 
 	ProgressBar myHP, mySP, enemyHP, enemySP;
 	Button blobButton, itemsButton, runButton;
-	ImageView enemyBlob;
+	ImageView enemyBlobImage;
 	private GestureDetectorCompat mDetector;
 
 	@Override
@@ -35,6 +44,7 @@ public class BattleActivity extends Activity {
 		setContentView(R.layout.activity_battle);
 
 		// set up gestures
+		Log.i(TAG, "Setting up Battle Gestures");
 		mDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
 		// cache widgets
@@ -45,17 +55,71 @@ public class BattleActivity extends Activity {
 		blobButton = (Button) findViewById(R.id.show_blobs_button);
 		itemsButton = (Button) findViewById(R.id.show_items_button);
 		runButton = (Button) findViewById(R.id.run_away_button);
-		enemyBlob = (ImageView) findViewById(R.id.enemy_blob);
+		enemyBlobImage = (ImageView) findViewById(R.id.enemy_blob);
 
 		setBattleGestures();
 		setButtonListeners();
 
+		// Creating random blob enemy
+		try {
+			EnemyBlob enemyBlob = BlobPS.getInstance().getGame().makeEnemyBlob("Evil Blob");
+			BattleInstance currentBattle = new BattleInstance(BlobPS.getInstance().getGame()
+					.getPlayer(), enemyBlob);
+		} catch (Exception e) {
+			// TODO: handle exception
+			Log.i(TAG, "Failed to create enemy blob or battle instance");
+		}
+
+		
+
 	} // end of onCreate
+	
+	private void setupBlobList(View v){
+		View popupView = getLayoutInflater().inflate(R.layout.fragment_blob_party, null);
+		PopupWindow popupWindow = new PopupWindow(popupView, 
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		
+		LinearLayout blobListLayout = (LinearLayout) popupView.findViewById(R.id.blob_list_holder);
+		LinearLayout row = new LinearLayout(popupView.getContext());
+		
+		ImageView tmp = new ImageView(popupView.getContext());
+		Drawable myDrawable = getResources().getDrawable(R.drawable.purple_blob);
+		tmp.setImageDrawable(myDrawable);
+		row.addView(tmp);
+		blobListLayout.addView(row);
+		
+		row = new LinearLayout(popupView.getContext());
+		tmp = new ImageView(popupView.getContext());
+		myDrawable = getResources().getDrawable(R.drawable.green_blob);
+		tmp.setImageDrawable(myDrawable);
+		row.addView(tmp);
+		blobListLayout.addView(row);
+	   
+		popupWindow.setFocusable(true);
+	    popupWindow.setBackgroundDrawable(new ColorDrawable());
+	    
+	    // If the PopupWindow should be focusable
+	    popupWindow.setFocusable(true);
+
+	    // If you need the PopupWindow to dismiss when when touched outside 
+	    popupWindow.setBackgroundDrawable(new ColorDrawable());
+
+	    int location[] = new int[2];
+
+	    // Get the View's(the one that was clicked in the Fragment) location
+	    v.getLocationOnScreen(location);
+
+	    // Using location, the PopupWindow will be displayed right under anchorView
+	    popupWindow.showAtLocation(v, Gravity.CENTER, 
+	                                     location[0], location[1] + v.getHeight());
+
+		
+	}
 
 	private void setButtonListeners() {
 
 		final String DEBUG_TAG = "ButtonListener";
-		
+
 		// Listener for Blob Button
 		blobButton.setOnClickListener(new OnClickListener() {
 
@@ -63,7 +127,7 @@ public class BattleActivity extends Activity {
 			public void onClick(View v) {
 				// TODO - Pull up Blobs List Fragment
 				Log.d(DEBUG_TAG, "Clicked Blobs Button");
-
+				setupBlobList(v);
 			}
 		});
 
@@ -74,7 +138,7 @@ public class BattleActivity extends Activity {
 			public void onClick(View v) {
 				// TODO - Pull up Items List Fragment
 				Log.d(DEBUG_TAG, "Clicked Items Button");
-				
+
 			}
 		});
 
@@ -85,12 +149,15 @@ public class BattleActivity extends Activity {
 			public void onClick(View v) {
 				// TODO - Run away from battle
 				Log.d(DEBUG_TAG, "Clicked Run Button");
+				Toast.makeText(getApplicationContext(), "Ran away safely!", Toast.LENGTH_SHORT)
+						.show();
+				finish(); // change to finishActivity once done to get result of battle
 			}
 		});
 	}
 
 	private void setBattleGestures() {
-		enemyBlob.setOnTouchListener(new OnTouchListener() {
+		enemyBlobImage.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(final View view, final MotionEvent event) {
 				mDetector.onTouchEvent(event);
