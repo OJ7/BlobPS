@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BlosPS</string>
+    <string name="app_name">BlobPS</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_combine">CombineActivity</string>
     <string name="title_activity_battle">BattleActivity</string>

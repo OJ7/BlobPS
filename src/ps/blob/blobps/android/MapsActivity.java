@@ -6,6 +6,8 @@ import ps.blob.blobps.Map.Map;
 import ps.blob.blobps.R.drawable;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
@@ -14,8 +16,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -32,6 +38,7 @@ public class MapsActivity extends FragmentActivity {
 	private String TAG = "MapsActivity";
 
 	private static MapsActivity instance;
+	final Context context = this;
 
 	private GoogleMap mMap; // Might be null if Google Play services APK is not
 							// available.
@@ -310,12 +317,13 @@ public class MapsActivity extends FragmentActivity {
 		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(UMD, 14));
 	}
 
-	/**
+/**
 	 * Makes a grid to overlay on top of UMD Campus.
 	 * 
-	 * Done by making a new AreaGrid for each cell inside {@link #grid) by dividing {
+	 * Done by making a new AreaGrid for each cell inside {@link #grid) by dividing
+	 * 
 	 * @link #UMD_BOUNDS} into equal parts by Latitude and Longitude and adding an overlay from an
-	 * image onto that AreaGrid.
+	 *       image onto that AreaGrid.
 	 */
 	private void setUpGrid() {
 		double areaLength = Math.abs(EAST - WEST) / numAreas, areaHeight = Math.abs(NORTH - SOUTH)
@@ -367,9 +375,28 @@ public class MapsActivity extends FragmentActivity {
 				}
 
 				if (tappedArea != null) { // Area is inside grid
-					Toast.makeText(getApplicationContext(),
-							"Tapped on area with ID: " + tappedArea.getAreaID(), Toast.LENGTH_SHORT)
-							.show();
+					// Toast.makeText(getApplicationContext(),
+					// "Tapped on area with ID: " + tappedArea.getAreaID(), Toast.LENGTH_SHORT)
+					// .show();
+					final Dialog dialog = new Dialog(context);
+					dialog.setContentView(R.layout.maps_info);
+					dialog.setTitle("area_name_goes_here");
+
+					TextView text = (TextView) dialog.findViewById(R.id.text);
+					text.setText("area_info_goes_here");
+					ImageView image = (ImageView) dialog.findViewById(R.id.image);
+					image.setImageResource(R.drawable.ic_launcher);
+
+					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+
+					dialogButton.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+						}
+					});
+
+					dialog.show();
 					if (tappedArea.getGroundOverlay() != null) { // For debugging purposes, comment
 																	// out in final version
 						tappedArea.removeGroundOverlay();
