@@ -2,6 +2,7 @@ package ps.blob.blobps.android;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 import com.google.android.gms.games.Game;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -39,7 +40,11 @@ public class CombineActivity extends BlobPSActivity {
 
 	String TAG = "CombineActivity";
 	private ImageView currentBlobImage, mainBlobImage;
+	LinearLayout blobListLayout;
 	private ArrayList<Blob> blobList = new ArrayList<Blob>();
+	private TreeMap<ImageView, Blob> blobTreeMap = new TreeMap<ImageView, Blob>(); 
+	CombineInstance combineInstance;
+	Blob mainBlob, currentBlob;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +52,12 @@ public class CombineActivity extends BlobPSActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_combine);
 
-		CombineInstance combineInstance = new CombineInstance();
+		combineInstance = new CombineInstance();
 
 		// Caching all widgets
 		// currentBlobImage = (ImageView) findViewById(R.id.current_blob);
 		mainBlobImage = (ImageView) findViewById(R.id.main_blob);
+		blobListLayout = (LinearLayout) findViewById(R.id.blob_list);
 
 		// Setting listeners for blobs
 		// currentBlobImage.setOnTouchListener(new CombineOnTouchListener());
@@ -61,7 +67,6 @@ public class CombineActivity extends BlobPSActivity {
 		try {
 			blobList.addAll(bps().getGame().getPlayer().getBlobs().values());
 		} catch (NullPointerException e) {
-			// TODO: handle exception
 			Log.i(TAG, "Failed to get list of player's blobs");
 		}
 
@@ -72,14 +77,13 @@ public class CombineActivity extends BlobPSActivity {
 				blobList.add(b);
 			}
 		} catch (NullPointerException e) {
-			// TODO: handle exception
 			Log.i(TAG, "Failed to create random blobs");
 		}
 
 		// Setting Main Blob as first Blob in list
-		Blob mainBlob = blobList.get(0);
-		int imageResource = getResources().getIdentifier("drawable/" + mainBlob.getImageReference(), null,
-				getPackageName());
+		mainBlob = blobList.get(0);
+		int imageResource = getResources().getIdentifier(
+				"drawable/" + mainBlob.getImageReference(), null, getPackageName());
 		mainBlobImage.setImageResource(imageResource);
 
 		addBlobsToLayout();
@@ -87,7 +91,7 @@ public class CombineActivity extends BlobPSActivity {
 	}
 
 	private void addBlobsToLayout() {
-		LinearLayout blobListLayout = (LinearLayout) findViewById(R.id.blob_list);
+
 		int i = 0;
 		for (Blob b : blobList) {
 			if (i++ > 0) {
@@ -104,6 +108,7 @@ public class CombineActivity extends BlobPSActivity {
 
 				imageView.getLayoutParams().width = 250;
 				imageView.setPadding(15, 0, 0, 15);
+				blobTreeMap.put(imageView, b);
 			}
 		}
 
@@ -112,6 +117,8 @@ public class CombineActivity extends BlobPSActivity {
 	private void updateCombineBlobStats(View v) {
 		// TODO - Update the Combine Blob Stats here
 		currentBlobImage = (ImageView) v;
+		
+		currentBlob = blobTreeMap.get(v);
 
 	}
 
@@ -195,6 +202,7 @@ public class CombineActivity extends BlobPSActivity {
 						Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG)
 								.show();
 						// TODO - implement combine (and maybe confirmation dialog)
+						//combineInstance.doCombine(mainBlob, combine)
 
 					} else {
 						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
