@@ -2,6 +2,7 @@ package ps.blob.blobps.Map;
 
 import java.util.TreeMap;
 
+import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R;
 import ps.blob.blobps.android.MapsActivity;
 
@@ -15,7 +16,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
  * Representation of the grid the map contains.
  * 
  * @author Chijioke/nuplex
- *
+ * 
  */
 public class AreaGrid {
 
@@ -294,6 +295,18 @@ public class AreaGrid {
 				grid[x][y] = grid[x][y].toUnknownArea();
 			}
 		}
+	}
+
+	public boolean updateAreaAtCurrentLocation() {
+
+		LatLng currLocation = BlobPS.getInstance().getPlayer().getLatLng();
+		Area currArea = getAreaWithPoint(currLocation);
+		if (currArea != null && currArea instanceof UnknownArea) {
+			setArea(currArea.x, currArea.y, currArea.toKnownArea());
+			return true;
+		}
+
+		return false;
 	}
 
 	public LatLngBounds getGridBounds() {

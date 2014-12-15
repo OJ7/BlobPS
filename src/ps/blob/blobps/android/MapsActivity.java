@@ -16,9 +16,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -57,17 +61,11 @@ public class MapsActivity extends FragmentActivity {
 
 	private final LatLng UMD = new LatLng(38.986918, -76.942554);
 	private LatLng myLocation = UMD;
+	private LocationManager locationManager;
+	private MyLocationListener mylistener;
+	private String provider;
 
-	// A lot of this info is now in the Map class
-	/*
-	 * private final double NORTH = 39.001460, EAST = -76.956008, SOUTH = 38.980446, WEST =
-	 * -76.931203; private final LatLng UMD_NE = new LatLng(NORTH, EAST), UMD_SW = new LatLng(SOUTH,
-	 * WEST); private final LatLngBounds UMD_BOUNDS = new LatLngBounds(UMD_SW, UMD_NE);
-	 * 
-	 * 
-	 * private final int numAreas = 8; // grid will be numAreas x numAreas private AreaGrid[][] grid
-	 * = new AreaGrid[numAreas][numAreas];
-	 */
+	private Criteria criteria;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +76,33 @@ public class MapsActivity extends FragmentActivity {
 		createMainMenu();
 		instance = this;
 
+		// Location Stuff //
+
+		// Get the location manager
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		// Define the criteria how to select the location provider
+		criteria = new Criteria();
+		criteria.setAccuracy(Criteria.ACCURACY_COARSE); // default
+		criteria.setCostAllowed(false);
+
+		provider = locationManager.getBestProvider(criteria, false);
+
+		Location location = locationManager.getLastKnownLocation(provider);
+
+		mylistener = new MyLocationListener();
+
+		if (location != null) {
+			mylistener.onLocationChanged(location);
+		} else {
+			// leads to the settings because there is no last known location
+			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			startActivity(intent);
+		}
+		// location updates: at least 1 meter and 200millsecs change
+		locationManager.requestLocationUpdates(provider, 200, 1, mylistener);
+
+		// END Location Stuff //
+
 		// Setting up BlobPS
 		blobPS = new BlobPS();
 	}
@@ -86,6 +111,50 @@ public class MapsActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		setUpMapIfNeeded();
+	}
+
+	private class MyLocationListener implements LocationListener {
+
+		@Override
+		public void onLocationChanged(Location location) {
+			// Initialize the location fields
+			// latitude.setText("Latitude: "+String.valueOf(location.getLatitude()));
+			// longitude.setText("Longitude: "+String.valueOf(location.getLongitude()));
+			// provText.setText(provider + " provider has been selected.");
+
+			if (location != null) {
+				// Set Player Location
+				BlobPS.getInstance().getPlayer().setLocation(location);
+				// Update Area at Current Location
+				if (BlobPS.getInstance().getMap().getGrid().updateAreaAtCurrentLocation()) {
+					Toast.makeText(MapsActivity.this, "Location Changed -- Removed Fog!",
+							Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(MapsActivity.this, "Location changed!", Toast.LENGTH_SHORT)
+							.show();
+				}
+			}
+
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			Toast.makeText(MapsActivity.this, provider + "'s status changed to " + status + "!",
+					Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+			// Toast.makeText(MapsActivity.this, "Provider " + provider + " enabled!",
+			// Toast.LENGTH_SHORT).show();
+
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			Toast.makeText(MapsActivity.this, "Provider " + provider + " disabled!",
+					Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	/**
@@ -373,9 +442,6 @@ public class MapsActivity extends FragmentActivity {
 					});
 
 					dialog.show();
-					if (tappedArea.getGroundOverlay() != null) {
-						tappedArea.removeGroundOverlay();
-					}
 				}
 
 				else {
