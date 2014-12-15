@@ -41,6 +41,7 @@ public class MapsActivity extends FragmentActivity {
 	private String TAG = "MapsActivity";
 
 	private static MapsActivity instance;
+	private BlobPS blobPS;
 	final Context context = this;
 
 	private GoogleMap mMap; // Might be null if Google Play services APK is not
@@ -75,7 +76,7 @@ public class MapsActivity extends FragmentActivity {
 		instance = this;
 
 		// Setting up BlobPS
-		new BlobPS();
+		blobPS = new BlobPS();
 	}
 
 	@Override
