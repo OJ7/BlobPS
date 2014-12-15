@@ -341,36 +341,36 @@ public class MapsActivity extends FragmentActivity {
 		mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng position) {
-				// TODO: Reimplement with new map code.
-				/*
-				 * AreaGrid tappedArea = null; // Finds area that was tapped for (AreaGrid[]
-				 * areaArray : grid) { for (AreaGrid area : areaArray) { if
-				 * (area.getAreaBounds().contains(position)) { tappedArea = area; break; } } }
-				 * 
-				 * if (tappedArea != null) { // Area is inside grid //
-				 * Toast.makeText(getApplicationContext(), // "Tapped on area with ID: " +
-				 * tappedArea.getAreaID(), Toast.LENGTH_SHORT) // .show(); final Dialog dialog = new
-				 * Dialog(context); dialog.setContentView(R.layout.maps_info);
-				 * dialog.setTitle("area_name_goes_here");
-				 * 
-				 * TextView text = (TextView) dialog.findViewById(R.id.text);
-				 * text.setText("area_info_goes_here"); ImageView image = (ImageView)
-				 * dialog.findViewById(R.id.image); image.setImageResource(R.drawable.ic_launcher);
-				 * 
-				 * Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-				 * 
-				 * dialogButton.setOnClickListener(new OnClickListener() {
-				 * 
-				 * @Override public void onClick(View v) { dialog.dismiss(); } });
-				 * 
-				 * dialog.show(); if (tappedArea.getGroundOverlay() != null) { // For debugging
-				 * purposes, comment // out in final version tappedArea.removeGroundOverlay(); } }
-				 * else { // Area is outside of grid Toast.makeText(getApplicationContext(),
-				 * "Tapped outside of campus grid", Toast.LENGTH_SHORT).show(); }
-				 */
+				Area tappedArea = blobPS.getMap().getGrid().getAreaWithPoint(position);
+				String areaName = tappedArea.getName();
+
+				if (tappedArea != null) { // Area is inside grid //
+					final Dialog dialog = new Dialog(context); 
+					dialog.setContentView(R.layout.maps_info);
+					dialog.setTitle(areaName);
+				
+					TextView text = (TextView) dialog.findViewById(R.id.text);
+					text.setText("area_info_goes_here"); 
+					ImageView image = (ImageView) dialog.findViewById(R.id.image); 
+					image.setImageResource(R.drawable.ic_launcher);
+				
+					Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+				
+					dialogButton.setOnClickListener(new OnClickListener() {
+						@Override public void onClick(View v) { 
+							dialog.dismiss(); 
+						} 
+					});
+					
+					dialog.show();
+				}
+				if (tappedArea.getGroundOverlay() != null) {  
+					tappedArea.removeGroundOverlay(); 
+				} else {
+					Toast.makeText(getApplicationContext(), "Tapped outside of campus grid", Toast.LENGTH_SHORT).show(); 
+				}
 			}
 		});
-
 	}
 
 	public static final MapsActivity getInstance() {
