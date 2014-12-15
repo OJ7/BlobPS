@@ -7,8 +7,10 @@ import java.util.TreeMap;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import ps.blob.blobps.Blob.Blob;
 import ps.blob.blobps.Blob.EnemyBlob;
 import ps.blob.blobps.Blob.PersonalBlob;
+import ps.blob.blobps.Special.Special;
 import android.location.Location;
 
 /**
@@ -39,7 +41,12 @@ public class Player {
 	 * have been created.
 	 */
 	public Player(){
+		Special heavyHit = new Special("Heavy Hit", 
+				"An impressive attack that deals damage 1.5x the blob's ATK.", 
+				Special.HEAVY_HIT);
+		PersonalBlob defaultBlob = new PersonalBlob("MyFirstBlob", this, "MyFirstBlob", 10, 3, 5, 5, 0.0, null, null, heavyHit);
 		blobs = new HashMap<String, PersonalBlob>();
+		blobs.put("MyFirstBlob", defaultBlob);
 		blobOrder = new TreeMap<Integer, String>();
 		items = new ArrayList<Item>();
 	}
@@ -56,7 +63,12 @@ public class Player {
 	 */
 	public Player(String name){
 		this.name = name;
+		Special heavyHit = new Special("Heavy Hit", 
+				"An impressive attack that deals damage 1.5x the blob's ATK.", 
+				Special.HEAVY_HIT);
+		PersonalBlob defaultBlob = new PersonalBlob("MyFirstBlob", this, "MyFirstBlob", 10, 3, 5, 5, 0.0, null, null, heavyHit);
 		blobs = new HashMap<String, PersonalBlob>();
+		blobs.put("MyFirstBlob", defaultBlob);		
 		items = new ArrayList<Item>();
 	}
 
