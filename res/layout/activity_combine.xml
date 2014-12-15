@@ -26,17 +26,11 @@
                 android:text="Current Blob" >
             </TextView>
 
-            <ProgressBar
-                android:id="@+id/current_blob_hp"
-                style="?android:attr/progressBarStyleHorizontal"
+            <TextView
+                android:id="@+id/curr_blob_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ProgressBar
-                android:id="@+id/current_blob_sp"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" >
+            </TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -51,21 +45,6 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
                 android:paddingBottom="5dp" />
-
-            <TextView
-                android:id="@+id/combine_hp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/hp" />
-
-            <TextView
-                android:id="@+id/combine_sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/sp" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -82,20 +61,14 @@
                 android:text="Combined Blob" >
             </TextView>
 
-            <ProgressBar
-                android:id="@+id/combined_blob_hp"
-                style="?android:attr/progressBarStyleHorizontal"
+            <TextView
+                android:id="@+id/comb_blob_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ProgressBar
-                android:id="@+id/combined_blob_sp"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content" >
+            </TextView>
         </LinearLayout>
     </LinearLayout>
- 
+
     <LinearLayout
         android:id="@+id/combinefield"
         android:layout_width="match_parent"
@@ -141,7 +114,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="3dp" >
-           
         </LinearLayout>
     </HorizontalScrollView>
 
