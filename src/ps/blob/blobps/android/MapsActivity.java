@@ -139,8 +139,8 @@ public class MapsActivity extends FragmentActivity {
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
-			Toast.makeText(MapsActivity.this, provider + "'s status changed to " + status + "!",
-					Toast.LENGTH_SHORT).show();
+			// Toast.makeText(MapsActivity.this, provider + "'s status changed to " + status + "!",
+			// Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
@@ -152,8 +152,8 @@ public class MapsActivity extends FragmentActivity {
 
 		@Override
 		public void onProviderDisabled(String provider) {
-			Toast.makeText(MapsActivity.this, "Provider " + provider + " disabled!",
-					Toast.LENGTH_SHORT).show();
+			// Toast.makeText(MapsActivity.this, "Provider " + provider + " disabled!",
+			// Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -418,8 +418,6 @@ public class MapsActivity extends FragmentActivity {
 					final Dialog dialog = new Dialog(context);
 					dialog.setContentView(R.layout.maps_info);
 					TextView text = (TextView) dialog.findViewById(R.id.text);
-					ImageView image = (ImageView) dialog.findViewById(R.id.image);
-					image.setImageResource(R.drawable.ic_launcher);
 					if (tappedArea instanceof KnownArea) {
 						dialog.setTitle(tappedArea.getName());
 						text.setText("Highest rank of blob you can find here: "
