@@ -1,8 +1,17 @@
 package ps.blob.blobps.android;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.google.android.gms.games.Game;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
+import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.R;
 import ps.blob.blobps.R.id;
 import ps.blob.blobps.R.layout;
+import ps.blob.blobps.Blob.Blob;
+import ps.blob.blobps.Blob.PersonalBlob;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -26,7 +35,8 @@ import android.widget.Toast;
 public class CombineActivity extends Activity {
 
 	String TAG = "CombineActivity";
-	private ImageView leftBlob, middleBlob, rightBlob, mainBlob;
+	private ImageView currentBlobImage, mainBlobImage;
+	private ArrayList<PersonalBlob> blobList = new ArrayList<PersonalBlob>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +45,43 @@ public class CombineActivity extends Activity {
 		setContentView(R.layout.activity_combine);
 
 		// Caching all widgets
-		leftBlob = (ImageView) findViewById(R.id.left_blob);
-		middleBlob = (ImageView) findViewById(R.id.middle_blob);
-		rightBlob = (ImageView) findViewById(R.id.right_blob);
-		mainBlob = (ImageView) findViewById(R.id.current_blob);
+		currentBlobImage = (ImageView) findViewById(R.id.current_blob);
+		mainBlobImage = (ImageView) findViewById(R.id.main_blob);
 
 		// Setting listeners for blobs
-		leftBlob.setOnTouchListener(new CombineOnTouchListener());
-		middleBlob.setOnTouchListener(new CombineOnTouchListener());
-		rightBlob.setOnTouchListener(new CombineOnTouchListener());
-		mainBlob.setOnDragListener(new CombineDragListener());
+		currentBlobImage.setOnTouchListener(new CombineOnTouchListener());
+		mainBlobImage.setOnDragListener(new CombineDragListener());
+
+		// Getting List of blobs
+		try {
+			blobList.addAll(BlobPS.getInstance().getGame().getPlayer().getBlobs().values());
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			Log.i(TAG, "Failed to get list of player's blobs");
+		}
+
+		// TEMP: adding random blob to list
+		try {
+			ArrayList<Blob> tmp = BlobPS.getInstance().getGame().createCompletelyRandomBlobs(5);
+			for (Blob b : tmp) {
+				blobList.add((PersonalBlob) b);
+			}
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			Log.i(TAG, "Failed to create random blobs");
+		}
+
+		// Setting Main Blob as first Blob in list
+		//PersonalBlob mainBlob = blobList.get(0);
+		// mainBlob.getImageReference()
+
+		mainBlobImage.setImageResource(R.drawable.blue_blob);
 
 	}
-	
-	private void updateCombineBlobStats(View v){
+
+	private void updateCombineBlobStats(View v) {
 		// TODO - Update the Combine Blob Stats here
+
 	}
 
 	private final class CombineOnTouchListener implements View.OnTouchListener {
@@ -62,39 +94,39 @@ public class CombineActivity extends Activity {
 		@Override
 		public boolean onTouch(View view, MotionEvent event) {
 			switch (event.getAction()) {
-				case MotionEvent.ACTION_DOWN: {
-					downY = event.getY();
-					
-					updateCombineBlobStats(view);
-					return true;
-				}
-				case MotionEvent.ACTION_MOVE: {
-					upY = event.getY();
+			case MotionEvent.ACTION_DOWN: {
+				downY = event.getY();
 
-					float deltaY = downY - upY;
+				updateCombineBlobStats(view);
+				return true;
+			}
+			case MotionEvent.ACTION_MOVE: {
+				upY = event.getY();
 
-					// swipe vertical?
-					if (Math.abs(deltaY) > MIN_DISTANCE_Y) {
-						Log.i(TAG, "swipe vertical...");
-						if (deltaY < 0) { // moving down
-							// Start your drag here if appropriate
-							return true;
-						}
-						if (deltaY > 0) { // moving up
-							// Or start your drag here if appropriate
+				float deltaY = downY - upY;
 
-							DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
+				// swipe vertical?
+				if (Math.abs(deltaY) > MIN_DISTANCE_Y) {
+					Log.i(TAG, "swipe vertical...");
+					if (deltaY < 0) { // moving down
+						// Start your drag here if appropriate
+						return true;
+					}
+					if (deltaY > 0) { // moving up
+						// Or start your drag here if appropriate
 
-							view.startDrag(null, // data to be dragged
-									shadowBuilder, // drag shadow
-									view, // local data about the drag and drop operation
-									0 // no needed flags
-							);
+						DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
 
-							return true;
-						}
+						view.startDrag(null, // data to be dragged
+								shadowBuilder, // drag shadow
+								view, // local data about the drag and drop operation
+								0 // no needed flags
+						);
+
+						return true;
 					}
 				}
+			}
 			}
 			return false;
 		}
@@ -112,43 +144,42 @@ public class CombineActivity extends Activity {
 			switch (event.getAction()) {
 
 			// signal for the start of a drag and drop operation.
-				case DragEvent.ACTION_DRAG_STARTED:
-					Log.i(DEBUG_TAG, "Started Drag");
+			case DragEvent.ACTION_DRAG_STARTED:
+				Log.i(DEBUG_TAG, "Started Drag");
+				break;
+
+			case DragEvent.ACTION_DRAG_ENTERED:
+				Log.i(DEBUG_TAG, "Entered view");
+				break;
+
+			case DragEvent.ACTION_DRAG_EXITED:
+				Log.i(DEBUG_TAG, "Exited view");
+
+				break;
+
+			case DragEvent.ACTION_DROP:
+				Log.i(DEBUG_TAG, "Dropped in view");
+
+				if (v == findViewById(R.id.main_blob)) {
+					Context context = getApplicationContext();
+					Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG).show();
+					// TODO - implement combine (and maybe confirmation dialog)
+
+				} else {
+					Context context = getApplicationContext();
+					Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
+							.show();
+
 					break;
+				}
+				break;
 
-				case DragEvent.ACTION_DRAG_ENTERED:
-					Log.i(DEBUG_TAG, "Entered view");
-					break;
+			case DragEvent.ACTION_DRAG_ENDED:
+				Log.i(DEBUG_TAG, "Ended drag");
+				break;
 
-				case DragEvent.ACTION_DRAG_EXITED:
-					Log.i(DEBUG_TAG, "Exited view");
-
-					break;
-
-				case DragEvent.ACTION_DROP:
-					Log.i(DEBUG_TAG, "Dropped in view");
-
-					if (v == findViewById(R.id.current_blob)) {
-						Context context = getApplicationContext();
-						Toast.makeText(context, "Implement Combine Blob!", Toast.LENGTH_LONG)
-								.show();
-						// TODO - implement combine (and maybe confirmation dialog)
-
-					} else {
-						Context context = getApplicationContext();
-						Toast.makeText(context, "Drag to main blob to combine!", Toast.LENGTH_LONG)
-								.show();
-
-						break;
-					}
-					break;
-
-				case DragEvent.ACTION_DRAG_ENDED:
-					Log.i(DEBUG_TAG, "Ended drag");
-					break;
-
-				default:
-					break;
+			default:
+				break;
 			}
 			return true;
 		}

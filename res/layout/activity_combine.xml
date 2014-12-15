@@ -109,13 +109,13 @@
             android:layout_weight="1" />
 
         <LinearLayout
-            android:id="@+id/current_blob_layout"
+            android:id="@+id/main_blob_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5" >
 
             <ImageView
-                android:id="@+id/current_blob"
+                android:id="@+id/main_blob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -142,28 +142,13 @@
             android:padding="3dp" >
 
             <ImageView
-                android:id="@+id/left_blob"
+                android:id="@+id/current_blob"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:paddingTop="13dp"
                 android:src="@drawable/green_blob" />
-
-            <ImageView
-                android:id="@+id/middle_blob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:paddingBottom="5dp"
-                android:src="@drawable/blue_blob" />
-
-            <ImageView
-                android:id="@+id/right_blob"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:paddingTop="13dp"
-                android:src="@drawable/orange_blob" />
+           
         </LinearLayout>
     </HorizontalScrollView>
 
