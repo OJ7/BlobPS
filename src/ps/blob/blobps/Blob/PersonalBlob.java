@@ -8,7 +8,7 @@ import ps.blob.blobps.Special.Special;
 
 /**
  * Created by Jason on 12/3/2014.
- * Modified by Chijioke 12/11/2014
+ * Modified by Chijioke/nuplex 12/11/2014
  */
 public class PersonalBlob extends Blob {
 	private String personalName;

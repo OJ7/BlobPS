@@ -5,6 +5,11 @@ import java.util.HashMap;
 import ps.blob.blobps.Item;
 import ps.blob.blobps.Special.Special;
 
+/**
+ * Representation of a blob.
+ * @author Chijioke/nuplex
+ *
+ */
 public abstract class Blob {
     protected String name;
     public final static int PERSONAL = 1, ENEMY = 2;

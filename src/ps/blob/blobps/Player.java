@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.TreeMap;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import ps.blob.blobps.Blob.EnemyBlob;
 import ps.blob.blobps.Blob.PersonalBlob;
 import android.location.Location;
 
 /**
  *  Representation of the player.
- * @author Chijioke/chokon
+ * @author Chijioke/nuplex
  *
  */
 public class Player {
@@ -91,6 +93,23 @@ public class Player {
 		items.add(item.getThisItemsInstance());
 	}
 
+	/**
+	 * Renames the blob to newName. Renaming a blob may change their order.
+	 * @param oldName
+	 * @param newName
+	 * @return true if renamed, false if wasn't.
+	 */
+	public boolean renameBlob(String oldName, String newName){
+		if(!blobs.containsKey(oldName)){
+			return false;
+		}
+		PersonalBlob b = blobs.get(oldName);
+		b.setPersonalName(newName);
+		addBlob(b);
+		removeBlob(oldName);
+		return true;
+	}
+	
 	public void useHealItem(Item item, PersonalBlob blob){
 		if(item.getType() != Item.HEAL){
 			throw new IllegalArgumentException("using non-heal item "
@@ -294,6 +313,13 @@ public class Player {
 	 */
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+	
+	/**
+	 * Get's the players current latitude and longitude
+	 */
+	public LatLng getLatLng(){
+		return new LatLng(location.getLatitude(), location.getLongitude());
 	}
 
 	public int getId() {

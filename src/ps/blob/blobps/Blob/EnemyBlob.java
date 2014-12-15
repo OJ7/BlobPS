@@ -9,6 +9,7 @@ import ps.blob.blobps.Special.Special;
 
 /**
  * A blob that is fought against or found in the wild.
+ * @author Chijioke/nuplex
  */
 public class EnemyBlob extends Blob {
 	private final int type = ENEMY;
@@ -50,7 +51,7 @@ public class EnemyBlob extends Blob {
 	 * new, fully healed, personal blob for the player.
 	 * @param name
 	 * @param owner
-	 * @return
+	 * @return blob
 	 */
 	public PersonalBlob capture(String name, Player owner){
 		return new PersonalBlob(name, owner, this);

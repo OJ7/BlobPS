@@ -19,7 +19,11 @@ import ps.blob.blobps.Map.Map;
  * Master back-end class, controls most of the back-end.
  * Manages saving and loading (persistency) and android inputs
  * for battling and combining.
- * @author Chijioke/chokon
+ * 
+ * If you want to load a BlobPS game, do
+ * javac BlobPS load [filename or "recent"]
+ * 
+ * @author Chijioke/nuplex
  *
  */
 public class BlobPS {
@@ -30,11 +34,27 @@ public class BlobPS {
 	private static int saveCounter = 1;
 	
 	private Map map;
+	
+	public static void main(String[] args){
+		//may have wrong array value
+		//just for loading in a game.
+		if(args[2] != null && args[2].equals("load")){
+			if(args[3].equals("recent")){
+				new BlobPS("", true);
+			} else if (args[3] != null) {
+				new BlobPS(args[3], false);
+			} else if (args[3] == null){
+				new BlobPS();
+			}
+		}
+		new BlobPS();
+	}
 
 	/**Creates brand new game*/
 	public BlobPS(){
 		game = new Game();
 		map = new Map();
+		game.getPlayer().setLocation(map.getCurrentLocation());
 		instance = this;
 	}
 	
@@ -57,6 +77,8 @@ public class BlobPS {
 		} else {
 			game = loadGame(filename);
 		}
+		map = new Map();
+		game.getPlayer().setLocation(map.getCurrentLocation());
 		instance = this;
 	}
 
@@ -230,8 +252,16 @@ public class BlobPS {
 		return map;
 	}
 	
+	/**
+	 * Get's a BlobPS instance. Note that a BlobPS object must have been
+	 * @return
+	 */
 	public static final BlobPS getInstance(){
 		return instance;
+	}
+	
+	public Player getPlayer(){
+		return game.getPlayer();
 	}
 	
 	

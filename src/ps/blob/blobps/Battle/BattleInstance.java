@@ -10,7 +10,7 @@ import ps.blob.blobps.Blob.PersonalBlob;
  * be directly manipulated in order for a battle to progress,
  * otherwise battles would be 100% automatic and out of the
  * control of the player.
- * @author Chijioke
+ * @author Chijioke/nuplex
  *
  */
 public class BattleInstance {
@@ -171,6 +171,14 @@ public class BattleInstance {
 			return true;
 		}
 		return false;
+	}
+		
+	/**
+	 * Does end of battle task, such as healing all player's blobs. This 
+	 * should be called when the battle ends.
+	 */
+	public void doEndBattleTasks(){
+		player.healAllBlobs();
 	}
 	
 	/**

@@ -14,7 +14,7 @@ import ps.blob.blobps.Special.Special;
 /**
  * The game itself. Contains game information such as blobs, specials, and items.
  * Also manages battles (to an extent) and combining.
- * @author Chijioke
+ * @author Chijioke/nuplex
  *
  */
 public class Game implements Serializable {
@@ -63,6 +63,7 @@ public class Game implements Serializable {
 		instance = this;
 	}
 
+	@SuppressWarnings("static-access")
 	public Game(Game game){
 		this.allBlobs = new TreeMap<String, EnemyBlob>(game.allBlobs);
 		this.allItems = new TreeMap<String, Item>(game.allItems);
@@ -73,7 +74,10 @@ public class Game implements Serializable {
 		instance = this;
 	}
 
-	private void defineBlobs(){}
+	private void defineBlobs(){
+		//For now no hard-defined blobs
+		createCompletelyRandomBlobs(50);
+	}
 
 	private void defineItems(){
 		Item cookie = new Item(Item.HEAL_25, "Cookie", 
@@ -172,8 +176,16 @@ public class Game implements Serializable {
 
 		Special newSpecial = randomSpecial();
 
-		//TODO: Make not awful, currently give between on average 1.5% ~ 0.1% 
-		double newRarity = ((r.nextInt(5)+1)*0.01)*(1.0/newTier)*((r.nextInt(5)+1)*0.1);
+		/*TODO: Make not awful, currently just assigns a number between 0.1 %
+			and 5% randomly.
+		*/
+		double newRarity = 0.001;
+		int loops = 5;
+		while(loops > 0){
+			newRarity += r.nextDouble();
+			loops--;
+		}
+		
 
 		EnemyBlob newBlob = new EnemyBlob(name, hp, sp, atk, def, newRarity, image, 
 				droplist, newSpecial);
@@ -306,7 +318,7 @@ public class Game implements Serializable {
 	 * an error in the code.
 	 * @return randomly generated name, or "AddMoreStringsx"
 	 */
-	private String nameRandomizer(){
+	public String nameRandomizer(){
 		String[] setColor =
 			{"Red", "Blue", "Green", "Yellow", "Pink", "Purple", "Violet",
 				"Orange", "Brown", "Black", "White", "Silver", "Gray",
@@ -393,15 +405,15 @@ public class Game implements Serializable {
 		return player;
 	}
 
-	public TreeMap<String, EnemyBlob> getAllBlobs() {
+	public final TreeMap<String, EnemyBlob> getAllBlobs() {
 		return allBlobs;
 	}
 
-	public TreeMap<String, Item> getAllItems() {
+	public final TreeMap<String, Item> getAllItems() {
 		return allItems;
 	}
 
-	public TreeMap<String, Special> getAllSpecials() {
+	public final TreeMap<String, Special> getAllSpecials() {
 		return allSpecials;
 	}
 	
