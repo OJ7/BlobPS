@@ -71,7 +71,6 @@ public class MapsActivity extends FragmentActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_maps);
 		setUpMapIfNeeded();
-		setUpGrid(); // TODO - fix grid overlays
 		createMainMenu();
 		instance = this;
 
@@ -329,34 +328,6 @@ public class MapsActivity extends FragmentActivity {
 		mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(UMD, 14));
 	}
 
-/**
-	 * Makes a grid to overlay on top of UMD Campus.
-	 * 
-	 * Done by making a new AreaGrid for each cell inside {@link #grid) by dividing
-	 * 
-	 * @link #UMD_BOUNDS} into equal parts by Latitude and Longitude and adding an overlay from an
-	 *       image onto that AreaGrid.
-	 */
-	private void setUpGrid() {		
-		// TODO Reimplement to work with new code.
-		/*
-		 * double areaLength = Math.abs(EAST - WEST) / numAreas, areaHeight = Math.abs(NORTH -
-		 * SOUTH) / numAreas; int areaID = 0; for (int row = 0; row < numAreas; row++) { for (int
-		 * col = 0; col < numAreas; col++) { LatLng SW = new LatLng(NORTH - (row + 1) * areaHeight,
-		 * EAST + col * areaLength); LatLng NE = new LatLng(NORTH - row * areaHeight, EAST + (col +
-		 * 1) * areaLength); Log.i(TAG, "areaID = " + areaID); Log.i(TAG, "SW = " + SW.toString());
-		 * Log.i(TAG, "NE = " + NE.toString());
-		 * 
-		 * AreaGrid area = new AreaGrid(SW, NE, areaID++); GroundOverlayOptions areaOverlayOptions =
-		 * new GroundOverlayOptions()
-		 * .image(BitmapDescriptorFactory.fromResource(R.drawable.grey_overlay))
-		 * .transparency((float) 0.25).positionFromBounds(area.getAreaBounds()); if (areaID == 11) {
-		 * areaOverlayOptions.image(BitmapDescriptorFactory
-		 * .fromResource(R.drawable.event_overlay)); } GroundOverlay areaOverlay =
-		 * mMap.addGroundOverlay(areaOverlayOptions); area.setGroundOverlay(areaOverlay);
-		 * grid[row][col] = area; } }
-		 */
-	}
 
 	/**
 	 * NOTE: currently removes the grid overlays (instead of popup dialog) for testing purposes
