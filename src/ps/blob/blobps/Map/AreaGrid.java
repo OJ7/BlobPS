@@ -76,7 +76,7 @@ public class AreaGrid {
 				// Setting ground overlay
 				GroundOverlayOptions areaOverlayOptions = new GroundOverlayOptions()
 						.image(BitmapDescriptorFactory.fromResource(R.drawable.grey_overlay))
-						.transparency((float) 0.75).positionFromBounds(area.getAreaBounds());
+						.transparency((float) 0.5).positionFromBounds(area.getAreaBounds());
 
 				GroundOverlay areaOverlay = MapsActivity.getInstance().getGoogleMap()
 						.addGroundOverlay(areaOverlayOptions);
