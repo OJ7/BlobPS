@@ -99,7 +99,12 @@ public class CombineActivity extends BlobPSActivity {
 
 	private void showCombinedBlob(PersonalBlob newBlob) {
 		setContentView(R.layout.screen_combined_blob);
-
+		
+		ImageView newBlobImageView = (ImageView) findViewById(R.id.new_combined_blob);
+		int imageResource = getResources().getIdentifier(
+				"drawable/" + newBlob.getImageReference(), null, getPackageName());
+		newBlobImageView.setImageResource(imageResource);
+		
 		TextView blobName = (TextView) findViewById(R.id.combined_blob_name);
 		blobName.setText(newBlob.getPersonalName());
 
