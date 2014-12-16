@@ -44,8 +44,8 @@ public class Player {
 		Special heavyHit = new Special("Heavy Hit", 
 				"An impressive attack that deals damage 1.5x the blob's ATK.", 
 				Special.HEAVY_HIT);
-		PersonalBlob defaultBlob1 = new PersonalBlob("MyFirstBlob", this, "MyFirstBlob", 10, 3, 5, 5, 0.0, "red_blob", new HashMap<Double, Item>(), heavyHit);
-		PersonalBlob defaultBlob2 = new PersonalBlob("MySecondBlob", this, "MySecondBlob", 20, 6, 10, 10, 0.0, "blue_blob", new HashMap<Double, Item>(), heavyHit);
+		PersonalBlob defaultBlob1 = new PersonalBlob("MyFirstBlob", this, "Chijioke", 10, 3, 5, 5, 0.0, "chijioke_blob", new HashMap<Double, Item>(), heavyHit);
+		PersonalBlob defaultBlob2 = new PersonalBlob("MySecondBlob", this, "Peter", 20, 6, 10, 10, 0.0, "peter_blob", new HashMap<Double, Item>(), heavyHit);
 		blobs = new HashMap<String, PersonalBlob>();
 		blobs.put("MyFirstBlob", defaultBlob1);
 		blobs.put("MySecondBlob", defaultBlob2);

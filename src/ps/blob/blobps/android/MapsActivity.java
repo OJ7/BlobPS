@@ -260,7 +260,7 @@ public class MapsActivity extends FragmentActivity {
 	private void blobFABListener() {
 		// Creates Floating Action Button for Blobs List
 		blobFAB = new FloatingActionButton.Builder(this)
-				.withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
+				.withDrawable(getResources().getDrawable(R.drawable.blob))
 				.withButtonColor(Color.parseColor("#EDC951"))
 				.withGravity(Gravity.BOTTOM | Gravity.RIGHT).withMargins(0, 0, 16, 86).create();
 
@@ -284,7 +284,7 @@ public class MapsActivity extends FragmentActivity {
 	private void itemFABListener() {
 		// Creates Floating Action Button for Item List
 		itemFAB = new FloatingActionButton.Builder(this)
-				.withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
+				.withDrawable(getResources().getDrawable(R.drawable.box))
 				.withButtonColor(Color.parseColor("#CBE86B"))
 				.withGravity(Gravity.BOTTOM | Gravity.RIGHT).withMargins(0, 0, 16, 156).create();
 
@@ -306,7 +306,7 @@ public class MapsActivity extends FragmentActivity {
 	private void combineFABListener() {
 		// Creates Floating Action Button for Combine Activity
 		combineFAB = new FloatingActionButton.Builder(this)
-				.withDrawable(getResources().getDrawable(R.drawable.ic_launcher))
+				.withDrawable(getResources().getDrawable(R.drawable.clear_blob_combo))
 				.withButtonColor(Color.parseColor("#53777A"))
 				.withGravity(Gravity.BOTTOM | Gravity.RIGHT).withMargins(0, 0, 16, 226).create();
 
