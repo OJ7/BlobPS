@@ -42,7 +42,7 @@ public class BattleActivity extends BlobPSActivity {
 
 	ProgressBar myHP, mySP, enemyHP, enemySP;
 	ImageView blobButton, itemsButton, runButton;
-	ImageView enemyBlobImage;
+	ImageView personalBlobImage, enemyBlobImage;
 	TextView personalBlobHP, enemyBlobHP;
 	private GestureDetectorCompat mDetector;
 	BattleInstance battleInstance;
@@ -69,6 +69,7 @@ public class BattleActivity extends BlobPSActivity {
 		blobButton = (ImageView) findViewById(R.id.show_blobs_button);
 		itemsButton = (ImageView) findViewById(R.id.show_items_button);
 		runButton = (ImageView) findViewById(R.id.run_away_button);
+		personalBlobImage = (ImageView) findViewById(R.id.personal_blob);
 		enemyBlobImage = (ImageView) findViewById(R.id.enemy_blob);
 		personalBlobHP = (TextView) findViewById(R.id.personal_blob_hp_number);
 		enemyBlobHP = (TextView) findViewById(R.id.enemy_blob_hp_number);
@@ -80,16 +81,16 @@ public class BattleActivity extends BlobPSActivity {
 	} // end of onCreate
 
 	private void setupBattleField() {
+		/*int imageResource = getResources().getIdentifier(
+				"drawable/" + battleInstance.getPersonalBlob().getImageReference(), null,
+				getPackageName());
+		Drawable myDrawable = getResources().getDrawable(imageResource);
+		personalBlobImage.setImageDrawable(myDrawable);
+*/
 		int imageResource = getResources().getIdentifier(
 				"drawable/" + battleInstance.getEnemyBlob().getImageReference(), null,
 				getPackageName());
 		Drawable myDrawable = getResources().getDrawable(imageResource);
-		enemyBlobImage.setImageDrawable(myDrawable);
-
-		imageResource = getResources().getIdentifier(
-				"drawable/" + battleInstance.getEnemyBlob().getImageReference(), null,
-				getPackageName());
-		myDrawable = getResources().getDrawable(imageResource);
 		enemyBlobImage.setImageDrawable(myDrawable);
 
 		updateBlobInfo();

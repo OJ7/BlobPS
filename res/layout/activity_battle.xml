@@ -145,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_weight="1"
-                android:src="@drawable/chijioke_blob" />
+                android:src="@drawable/peter_blob" />
         </LinearLayout>
 
         <View
@@ -164,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/loh_blob_rev" />
+                android:src="@drawable/chijioke_blob" />
 
             <View
                 android:layout_width="match_parent"
@@ -199,7 +199,7 @@
         <ImageButton
             android:id="@+id/run_away_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:scaleType="fitXY"
             android:src="@drawable/man_running" />
