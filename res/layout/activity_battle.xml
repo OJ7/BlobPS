@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="@drawable/forest_background">
 
     <LinearLayout
         android:id="@+id/blobs_info"
@@ -147,36 +148,34 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+   <LinearLayout
         android:id="@+id/blob_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="3dp" >
 
-        <Button
+        <ImageButton
             android:id="@+id/show_blobs_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
-            android:text="Blobs" />
+            android:src="@drawable/green_blob" />
 
-        <Button
+        <ImageButton
             android:id="@+id/show_items_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
-            android:text="Items" />
+            android:src="@drawable/box" />
 
-        <Button
+        <ImageButton
             android:id="@+id/run_away_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_weight="1"
-            android:text="Run" />
+            android:src="@drawable/man_running" />
+
     </LinearLayout>
 
 </LinearLayout>
