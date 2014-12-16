@@ -1,9 +1,16 @@
 package ps.blob.blobps.android;
 
+import java.util.HashMap;
+
+import com.google.android.gms.internal.bp;
+
 import ps.blob.blobps.BlobPS;
+import ps.blob.blobps.Game;
+import ps.blob.blobps.Item;
 import ps.blob.blobps.R;
 import ps.blob.blobps.Battle.BattleInstance;
 import ps.blob.blobps.Blob.EnemyBlob;
+import ps.blob.blobps.Combine.CombineInstance;
 import ps.blob.blobps.R.layout;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
@@ -26,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class BattleActivity extends BlobPSActivity {
@@ -33,9 +41,11 @@ public class BattleActivity extends BlobPSActivity {
 	private String TAG = "BattleActivity";
 
 	ProgressBar myHP, mySP, enemyHP, enemySP;
-	Button blobButton, itemsButton, runButton;
+	ImageView blobButton, itemsButton, runButton;
 	ImageView enemyBlobImage;
+	TextView personalBlobHP, enemyBlobHP;
 	private GestureDetectorCompat mDetector;
+	BattleInstance battleInstance;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,77 +53,86 @@ public class BattleActivity extends BlobPSActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_battle);
 
+		EnemyBlob enemy = new EnemyBlob("Evil Blob", 1, 1, 1, 1, 1, "peter_blob",
+				new HashMap<Double, Item>(), bps().getGame().randomSpecial());
+		battleInstance = new BattleInstance(bps().getPlayer(), enemy);
+
 		// set up gestures
 		Log.i(TAG, "Setting up Battle Gestures");
 		mDetector = new GestureDetectorCompat(this, new MyGestureListener());
 
 		// cache widgets
-		myHP = (ProgressBar) findViewById(R.id.personal_blob_hp);
+		myHP = (ProgressBar) findViewById(R.id.personal_blob_hp_bar);
 		mySP = (ProgressBar) findViewById(R.id.personal_blob_sp);
 		enemyHP = (ProgressBar) findViewById(R.id.enemy_blob_hp);
 		enemySP = (ProgressBar) findViewById(R.id.enemy_blob_sp);
-		blobButton = (Button) findViewById(R.id.show_blobs_button);
-		itemsButton = (Button) findViewById(R.id.show_items_button);
-		runButton = (Button) findViewById(R.id.run_away_button);
+		blobButton = (ImageView) findViewById(R.id.show_blobs_button);
+		itemsButton = (ImageView) findViewById(R.id.show_items_button);
+		runButton = (ImageView) findViewById(R.id.run_away_button);
 		enemyBlobImage = (ImageView) findViewById(R.id.enemy_blob);
+		personalBlobHP = (TextView) findViewById(R.id.personal_blob_hp_number);
+		enemyBlobHP = (TextView) findViewById(R.id.enemy_blob_hp_number);
 
 		setBattleGestures();
 		setButtonListeners();
-
-		// Creating random blob enemy
-		try {
-			EnemyBlob enemyBlob = BlobPS.getInstance().getGame().makeEnemyBlob("Evil Blob");
-			BattleInstance currentBattle = new BattleInstance(BlobPS.getInstance().getGame()
-					.getPlayer(), enemyBlob);
-		} catch (Exception e) {
-			// TODO: handle exception
-			Log.i(TAG, "Failed to create enemy blob or battle instance");
-		}
-
-		
+		setupBattleField();
 
 	} // end of onCreate
-	
-	private void setupBlobList(View v){
+
+	private void setupBattleField() {
+		int imageResource = getResources().getIdentifier(
+				"drawable/" + battleInstance.getEnemyBlob().getImageReference(), null,
+				getPackageName());
+		Drawable myDrawable = getResources().getDrawable(imageResource);
+		enemyBlobImage.setImageDrawable(myDrawable);
+
+		imageResource = getResources().getIdentifier(
+				"drawable/" + battleInstance.getEnemyBlob().getImageReference(), null,
+				getPackageName());
+		myDrawable = getResources().getDrawable(imageResource);
+		enemyBlobImage.setImageDrawable(myDrawable);
+
+		updateBlobInfo();
+	}
+
+	private void setupBlobList(View v) {
 		View popupView = getLayoutInflater().inflate(R.layout.fragment_blob_party, null);
-		PopupWindow popupWindow = new PopupWindow(popupView, 
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		
+		PopupWindow popupWindow = new PopupWindow(popupView, LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT);
+
 		LinearLayout blobListLayout = (LinearLayout) popupView.findViewById(R.id.blob_list_holder);
 		LinearLayout row = new LinearLayout(popupView.getContext());
-		
+
 		ImageView tmp = new ImageView(popupView.getContext());
 		Drawable myDrawable = getResources().getDrawable(R.drawable.purple_blob);
 		tmp.setImageDrawable(myDrawable);
 		row.addView(tmp);
 		blobListLayout.addView(row);
-		
+
 		row = new LinearLayout(popupView.getContext());
 		tmp = new ImageView(popupView.getContext());
 		myDrawable = getResources().getDrawable(R.drawable.green_blob);
 		tmp.setImageDrawable(myDrawable);
 		row.addView(tmp);
 		blobListLayout.addView(row);
-	   
+
 		popupWindow.setFocusable(true);
-	    popupWindow.setBackgroundDrawable(new ColorDrawable());
-	    
-	    // If the PopupWindow should be focusable
-	    popupWindow.setFocusable(true);
+		popupWindow.setBackgroundDrawable(new ColorDrawable());
 
-	    // If you need the PopupWindow to dismiss when when touched outside 
-	    popupWindow.setBackgroundDrawable(new ColorDrawable());
+		// If the PopupWindow should be focusable
+		popupWindow.setFocusable(true);
 
-	    int location[] = new int[2];
+		// If you need the PopupWindow to dismiss when when touched outside
+		popupWindow.setBackgroundDrawable(new ColorDrawable());
 
-	    // Get the View's(the one that was clicked in the Fragment) location
-	    v.getLocationOnScreen(location);
+		int location[] = new int[2];
 
-	    // Using location, the PopupWindow will be displayed right under anchorView
-	    popupWindow.showAtLocation(v, Gravity.CENTER, 
-	                                     location[0], location[1] + v.getHeight());
+		// Get the View's(the one that was clicked in the Fragment) location
+		v.getLocationOnScreen(location);
 
-		
+		// Using location, the PopupWindow will be displayed right under anchorView
+		popupWindow.showAtLocation(v, Gravity.CENTER, location[0], location[1] + v.getHeight());
+
 	}
 
 	private void setButtonListeners() {
@@ -127,7 +146,7 @@ public class BattleActivity extends BlobPSActivity {
 			public void onClick(View v) {
 				// TODO - Pull up Blobs List Fragment
 				Log.d(DEBUG_TAG, "Clicked Blobs Button");
-				setupBlobList(v);
+				// setupBlobList(v);
 			}
 		});
 
@@ -138,6 +157,11 @@ public class BattleActivity extends BlobPSActivity {
 			public void onClick(View v) {
 				// TODO - Pull up Items List Fragment
 				Log.d(DEBUG_TAG, "Clicked Items Button");
+				battleInstance.attemptCapture(bps().getGame().getAllItems().get("Sponge"));
+				// Blob Captured
+				Toast.makeText(getApplicationContext(), "Blob Captured!", Toast.LENGTH_SHORT)
+						.show();
+				finish();
 
 			}
 		});
@@ -176,6 +200,17 @@ public class BattleActivity extends BlobPSActivity {
 			Toast.makeText(getApplicationContext(), "Tapped on Enemy Blob", Toast.LENGTH_SHORT)
 					.show();
 			// TODO - Perform normal attack here
+			if (!battleInstance.battleIsOver()) { // Player turn
+				battleInstance.conductTurn(battleInstance.NORMAL);
+				updateBlobInfo();
+			}
+			if (!battleInstance.battleIsOver()) { // Enemy turn
+				battleInstance.conductTurn(battleInstance.NORMAL);
+				updateBlobInfo();
+			} else {
+				endBattle();
+
+			}
 			return true;
 		}
 
@@ -186,7 +221,36 @@ public class BattleActivity extends BlobPSActivity {
 			Toast.makeText(getApplicationContext(), "Swiped on Enemy Blob", Toast.LENGTH_SHORT)
 					.show();
 			// TODO - Perform special attack here
+			if (!battleInstance.battleIsOver()) { // Player turn
+				battleInstance.conductTurn(battleInstance.SPECIAL);
+				updateBlobInfo();
+			}
+			if (!battleInstance.battleIsOver()) { // Enemy turn
+				battleInstance.conductTurn(battleInstance.SPECIAL);
+				updateBlobInfo();
+			} else {
+				endBattle();
+			}
 			return true;
 		}
+	}
+
+	private void updateBlobInfo() {
+		//personalBlobHP.setText(battleInstance.getPersonalBlob().getHP());
+		//enemyBlobHP.setText(battleInstance.getEnemyBlob().getHP());
+	}
+
+	private void endBattle() {
+		String winner;
+		if (battleInstance.getWinner() == 0) {
+			winner = "You win";
+		} else {
+			winner = "You lose";
+		}
+
+		Toast.makeText(getApplicationContext(), "Battle finished! " + winner, Toast.LENGTH_SHORT)
+				.show();
+
+		finish();
 	}
 }

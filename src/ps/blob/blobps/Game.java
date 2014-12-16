@@ -401,7 +401,7 @@ public class Game implements Serializable {
 		return list;
 	}
 
-	private Special randomSpecial(){
+	public Special randomSpecial(){
 		Random r = new Random();
 		return (Special) allSpecials.values().toArray()[r.nextInt(allSpecials.size())];
 	}

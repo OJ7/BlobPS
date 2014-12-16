@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@drawable/forest_background">
+    android:background="@drawable/forest_background"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/blobs_info"
@@ -24,20 +24,31 @@
                 android:id="@+id/personal_blob_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="My Blob" >
+                android:text="My Blob"
+                android:textColor="#FFFFFF" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/personal_blob_hp_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#FFFFFF" >
             </TextView>
 
             <ProgressBar
-                android:id="@+id/personal_blob_hp"
+                android:id="@+id/personal_blob_hp_bar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
 
             <ProgressBar
                 android:id="@+id/personal_blob_sp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <LinearLayout
@@ -45,7 +56,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="invisible" >
 
             <TextView
                 android:layout_width="match_parent"
@@ -58,14 +70,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/hp" />
+                android:text="@string/hp"
+                android:textColor="#FFFFFF" />
 
             <TextView
                 android:id="@+id/battle_sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="@string/sp" />
+                android:text="@string/sp"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <LinearLayout
@@ -79,20 +93,31 @@
                 android:id="@+id/enemy_blob_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enemy Blob" >
+                android:text="Enemy Blob"
+                android:textColor="#FFFFFF" >
+            </TextView>
+
+            <TextView
+                android:id="@+id/enemy_blob_hp_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#FFFFFF" >
             </TextView>
 
             <ProgressBar
                 android:id="@+id/enemy_blob_hp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
 
             <ProgressBar
                 android:id="@+id/enemy_blob_sp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:visibility="invisible" />
         </LinearLayout>
     </LinearLayout>
 
@@ -120,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_weight="1"
-                android:src="@drawable/blue_blob" />
+                android:src="@drawable/chijioke_blob" />
         </LinearLayout>
 
         <View
@@ -139,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/green_blob_rev" />
+                android:src="@drawable/loh_blob_rev" />
 
             <View
                 android:layout_width="match_parent"
@@ -148,7 +173,7 @@
         </LinearLayout>
     </LinearLayout>
 
-   <LinearLayout
+    <LinearLayout
         android:id="@+id/blob_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -158,15 +183,17 @@
         <ImageButton
             android:id="@+id/show_blobs_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:scaleType="fitXY"
             android:src="@drawable/green_blob" />
 
         <ImageButton
             android:id="@+id/show_items_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
+            android:scaleType="fitXY"
             android:src="@drawable/box" />
 
         <ImageButton
@@ -174,8 +201,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:scaleType="fitXY"
             android:src="@drawable/man_running" />
-
     </LinearLayout>
 
 </LinearLayout>

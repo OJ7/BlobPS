@@ -154,7 +154,7 @@ public class Player {
 	 * @return true if blob was captured and now in roster, false capture failed
 	 */
 	public boolean useCaptureItem(Item item, EnemyBlob blob){
-		if(item.getType() != Item.HEAL){
+		if(item.getType() != Item.CAPTURE){
 			throw new IllegalArgumentException("using non-capture item "
 					+ "in useCaptureItem() on "+blob.getName());
 		} else {
@@ -244,7 +244,8 @@ public class Player {
 	 * @return first blob
 	 */
 	public PersonalBlob getFirstBlob(){
-		return blobs.get(blobOrder.firstKey());
+		//return blobs.get(blobOrder.firstKey());
+		return blobs.get(0);
 	}
 	
 	/**

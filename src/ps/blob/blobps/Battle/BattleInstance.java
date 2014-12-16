@@ -101,7 +101,8 @@ public class BattleInstance {
 	 * false if the capture failed.
 	 */
 	public boolean attemptCapture(Item item){
-		return player.useCaptureItem(item, enemy);
+		player.useCaptureItem(item, enemy);
+		return true;
 	}
 	
 	/**
@@ -202,6 +203,14 @@ public class BattleInstance {
 
 	public final int getCurrent() {
 		return current;
+	}
+	
+	public EnemyBlob getEnemyBlob(){
+		return enemy;
+	}
+	
+	public PersonalBlob getPersonalBlob(){
+		return playersCurrent;
 	}
 	
 	
