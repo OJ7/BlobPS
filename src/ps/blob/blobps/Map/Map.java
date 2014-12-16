@@ -22,11 +22,11 @@ import com.google.android.gms.maps.model.LatLng;
  *
  */
 public class Map {
-	private final double NORTH = 39.001460, EAST = -76.956008, SOUTH = 38.980446,
-			WEST = -76.931203;
+	private final double NORTH = 39.064502, EAST = -77.030423, SOUTH = 38.917404,
+			WEST = -76.856788;
 	private final LatLng UMD_NE = new LatLng(NORTH, EAST), 
 			UMD_SW = new LatLng(SOUTH, WEST);
-	private final int AREAS_ACROSS = 8, AREAS_DOWN = 8;
+	private final int AREAS_ACROSS = 32, AREAS_DOWN = 32;
 	private AreaGrid grid;
 	private Thread process;
 	private BattleInstance battleToDo;

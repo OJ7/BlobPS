@@ -2,6 +2,7 @@ package ps.blob.blobps.Combine;
 
 import java.util.Random;
 
+import ps.blob.blobps.BlobPS;
 import ps.blob.blobps.Game;
 import ps.blob.blobps.Blob.EnemyBlob;
 import ps.blob.blobps.Blob.PersonalBlob;
